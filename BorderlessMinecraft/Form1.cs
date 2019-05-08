@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -18,6 +19,8 @@ namespace BorderlessMinecraft
         public Form1()
         {
             InitializeComponent();
+
+            addProcesses();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -27,9 +30,31 @@ namespace BorderlessMinecraft
 
         }
 
+        private void addProcesses() //method to add processes to list
+        {
+            listBox1.Items.Clear();
+            foreach(Process proc in Program.getProcesses())
+            {
+                listBox1.Items.Add(proc.MainWindowTitle);
+            }
+        }
+
+        private void debugInstructionsLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Thanks!");
+            Program.setBorderless();
+            Program.setPos();
+            Program.setForeground();
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            addProcesses();
         }
     }
 }

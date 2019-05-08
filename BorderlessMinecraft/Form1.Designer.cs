@@ -28,39 +28,33 @@ namespace BorderlessMinecraft
         /// </summary>
         private void InitializeComponent()
         {
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.debugInstructionsLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.helloWorldLabel = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(191, 351);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(418, 20);
-            this.linkLabel1.TabIndex = 0;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Click here to continue learning how to build a desktop app!";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // debugInstructionsLabel
             // 
             this.debugInstructionsLabel.AutoSize = true;
-            this.debugInstructionsLabel.Location = new System.Drawing.Point(146, 107);
+            this.debugInstructionsLabel.Location = new System.Drawing.Point(68, 68);
+            this.debugInstructionsLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.debugInstructionsLabel.Name = "debugInstructionsLabel";
-            this.debugInstructionsLabel.Size = new System.Drawing.Size(532, 20);
+            this.debugInstructionsLabel.Size = new System.Drawing.Size(409, 13);
             this.debugInstructionsLabel.TabIndex = 1;
-            this.debugInstructionsLabel.Text = "Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app!";
+            this.debugInstructionsLabel.Text = "Select the session of Minecraft you want to make borderless and click \'Go Borderl" +
+    "ess\'";
+            this.debugInstructionsLabel.Click += new System.EventHandler(this.debugInstructionsLabel_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(325, 240);
+            this.button1.Location = new System.Drawing.Point(380, 195);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 43);
+            this.button1.Size = new System.Drawing.Size(97, 28);
             this.button1.TabIndex = 2;
-            this.button1.Text = "Click Me!";
+            this.button1.Text = "Go Borderless!";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -68,34 +62,55 @@ namespace BorderlessMinecraft
             // 
             this.helloWorldLabel.AutoSize = true;
             this.helloWorldLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.helloWorldLabel.Location = new System.Drawing.Point(303, 30);
+            this.helloWorldLabel.Location = new System.Drawing.Point(158, 18);
+            this.helloWorldLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.helloWorldLabel.Name = "helloWorldLabel";
-            this.helloWorldLabel.Size = new System.Drawing.Size(192, 37);
+            this.helloWorldLabel.Size = new System.Drawing.Size(211, 26);
             this.helloWorldLabel.TabIndex = 3;
-            this.helloWorldLabel.Text = "Hello World!";
+            this.helloWorldLabel.Text = "Borderless Minecraft";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(71, 102);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(304, 121);
+            this.listBox1.TabIndex = 4;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(380, 102);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(97, 28);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Refresh List";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(533, 292);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.helloWorldLabel);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.debugInstructionsLabel);
-            this.Controls.Add(this.linkLabel1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Borderless Minecraft";
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label debugInstructionsLabel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label helloWorldLabel;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button button2;
     }
 }
 
