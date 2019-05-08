@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,19 +34,22 @@ namespace BorderlessMinecraft
             return processes;
         }
 
-        public static void setBorderless()
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        public static void setBorderless(IntPtr handle)
         {
 
         }
 
-        public static void setPos()
+        public static void setPos(IntPtr handle)
         {
 
         }
 
-        public static void setForeground()
+        public static bool setForeground(IntPtr handle)
         {
-
+            return SetForegroundWindow(handle); //Places the Minecraft window at the foreground
         }
 
     }

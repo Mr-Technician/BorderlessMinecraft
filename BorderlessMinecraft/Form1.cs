@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -16,11 +17,13 @@ namespace BorderlessMinecraft
 {
     public partial class Form1 : Form
     {
+        //ArrayList minecraftProcesses = new ArrayList();
+        Process[] minecraftProcesses = new Process[10]; //initializes an array of processess
         public Form1()
         {
             InitializeComponent();
-
             addProcesses();
+            //button1.Enabled = false; //disable the button by default
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -33,9 +36,12 @@ namespace BorderlessMinecraft
         private void addProcesses() //method to add processes to list
         {
             listBox1.Items.Clear();
-            foreach(Process proc in Program.getProcesses())
+            int i = 0;
+            foreach (Process proc in Program.getProcesses())
             {
-                listBox1.Items.Add(proc.MainWindowTitle);
+                listBox1.Items.Add(proc.MainWindowTitle); //adds process title to list
+                minecraftProcesses[i] = proc; //adds the processes to the arry
+                i++;
             }
         }
 
@@ -44,11 +50,14 @@ namespace BorderlessMinecraft
 
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
-            Program.setBorderless();
-            Program.setPos();
-            Program.setForeground();
+            //Process[] processess = minecraftProcesses.ToArray();
+            Process process = minecraftProcesses[listBox1.SelectedIndex];
+            Program.setBorderless(process.MainWindowHandle);
+            Program.setPos(process.MainWindowHandle);
+            Program.setForeground(process.MainWindowHandle);
         }
 
 
