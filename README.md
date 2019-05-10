@@ -3,6 +3,6 @@ This application allows Minecraft to run as a borderless window. The default ful
 
 Basic usage is simple. If minecraft is already running, it will appear in the list of Minecraft sessions. Selecting one and clicking "Go Borderless" will remove all window decoration and set its size to match that of your computer's main monitor.
 
-Clicking "Set Title" is for usage with multiple accounts, and will append "(Second Account)" to the existing title. This is primarily useful when using OBS to record multiple Minecraft accounts by locking each game capture to a specific window title.
+Clicking "Set Title" is for usage with multiple accounts, and will append "(Second Account)" to the existing title. Optionally, a custom text can be used instead and will be appended to the current game title. This is primarily useful when using OBS to record multiple Minecraft accounts by locking each game capture to a specific window title.
 
 Advanced features that will allow for custom placement and sizing of windows will come in a future release.
