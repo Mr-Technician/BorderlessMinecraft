@@ -237,6 +237,7 @@ namespace BorderlessMinecraft
             this.linkLabel1.TabIndex = 19;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Help";
+            this.linkLabel1.Visible = false;
             // 
             // Form1
             // 

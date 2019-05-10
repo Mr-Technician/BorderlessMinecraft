@@ -97,7 +97,7 @@ namespace BorderlessMinecraft
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             string currentTitle = minecraftProcesses[listBox1.SelectedIndex].MainWindowTitle; //gets the minecraft process by index, and then its title
             string title;
-            if(textBox5.Text != "") //if the textbox hasd content, use for title
+            if(textBox5.Text != "") //if the textbox has content, use for title
             {
                 title = currentTitle + " " + textBox5.Text;
             }
