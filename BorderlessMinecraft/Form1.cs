@@ -1,3 +1,20 @@
+//Copyright (C) 2019 Riley Nielsen
+
+//This file is part of Borderless Minecraft.
+
+//   Borderless Minecraft is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+
+//    Borderless Minecraft is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+//    GNU General Public License for more details.
+
+//    You should have received a copy of the GNU General Public License
+//    along with Borderless Minecraft.  If not, see<https://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -78,7 +95,16 @@ namespace BorderlessMinecraft
         private void button3_Click(object sender, EventArgs e)
         {
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
-            string title = minecraftProcesses[listBox1.SelectedIndex].MainWindowTitle; //gets the minecraft process by index, and then its title
+            string currentTitle = minecraftProcesses[listBox1.SelectedIndex].MainWindowTitle; //gets the minecraft process by index, and then its title
+            string title;
+            if(textBox5.Text != "") //if the textbox hasd content, use for title
+            {
+                title = currentTitle + " " + textBox5.Text;
+            }
+            else //if the textbox is empty, use default
+            {
+                title = currentTitle + " (Second Account)";
+            }
             Program.setTitle(handle, title);
             addProcesses(); //after rename, refresh the list
         }
