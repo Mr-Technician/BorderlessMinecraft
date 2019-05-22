@@ -29,9 +29,11 @@ namespace BorderlessMinecraft
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        private const uint styleCache = 382664704; //caches the default window style
+
+        public const int xDefaultRes = 900; //default xRes for restored window
+        public const int yDefaultRes = 520; //default yRes for restored window
+
         [STAThread]
         static void Main()
         {
@@ -56,7 +58,7 @@ namespace BorderlessMinecraft
         private static extern int ShowWindow(IntPtr hWnd, uint Msg); //restores the window
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
         private static extern int GetWindowLongPtr(IntPtr hWnd, int nIndex); //gets window style
-        [DllImport("user32.dll", EntryPoint ="SetWindowLong")]
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
         private static extern int SetWindowLongPtr(IntPtr hWnd, int nIndex, uint dwNewLong); //sets window style
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags); //sets window position
@@ -66,6 +68,7 @@ namespace BorderlessMinecraft
         private static extern bool SetWindowText(IntPtr hWnd, string title); //changes the window title
 
         private static uint SW_RESTORE = 0x09; //const for restoreWindow
+        private static uint SW_MINIMIZE = 0x06;
 
         //sets the necessary constants for setBorderless
         private static int GWL_STYLE = -16;
@@ -82,6 +85,10 @@ namespace BorderlessMinecraft
         {
             return ShowWindow(handle, SW_RESTORE); //restores the window to a normal state
         }
+        public static int minimizeWindow(IntPtr handle)
+        {
+            return ShowWindow(handle, SW_MINIMIZE); //minimizes the window
+        }
 
         public static int setBorderless(IntPtr handle)
         {
@@ -90,15 +97,21 @@ namespace BorderlessMinecraft
             return SetWindowLongPtr(handle, GWL_STYLE, (uint)currentStyle); //removes the style elements
         }
 
-        public static bool setPos(IntPtr handle)
+        public static int undoBorderless(IntPtr handle)
         {
-            return SetWindowPos(handle, handle, 0, 0, getScreenRezx(), getScreenRezy(), SWP_NOZORDER); //sets the minecraft window to the 
+            //return SetWindowLongPtr(handle, GWL_STYLE, (uint)styleCache); //adds the style elements
+            return SetWindowLongPtr(handle, GWL_STYLE, styleCache); //adds the style elements
+        }
+
+        public static bool setPos(IntPtr handle, int xPos, int yPos, int xRes, int yRes)
+        {
+            return SetWindowPos(handle, handle, xPos, yPos, xRes, yRes, SWP_NOZORDER); //sets the minecraft window to the 
         }
 
         public static bool setForeground(IntPtr handle)
         {
             return SetForegroundWindow(handle); //places the Minecraft window at the foreground
-        }   
+        }
 
         public static bool setTitle(IntPtr handle, string title)
         {
@@ -107,13 +120,31 @@ namespace BorderlessMinecraft
 
         //helper methods
 
-        private static int getScreenRezx()
+        public static int getScreenRezx()
         {
             return Screen.PrimaryScreen.Bounds.Width; //returns screen width
         }
-        private static int getScreenRezy()
+
+        public static int getScreenRezy()
         {
             return Screen.PrimaryScreen.Bounds.Height; //returns screen height
+        }
+
+        public static int getCenterx()
+        {
+            return (Screen.PrimaryScreen.Bounds.Width / 2) - (xDefaultRes / 2); //gets the x coordinate to center the window
+        }
+
+        public static int getCentery()
+        {
+            return (Screen.PrimaryScreen.Bounds.Height / 2) - (yDefaultRes / 2); //gets the x coordinate to center the window
+        }
+
+        //debug methods
+
+        public static int getCurrentStyle(IntPtr handle)
+        {
+            return GetWindowLongPtr(handle, GWL_STYLE); //gets the current style
         }
     }
 }

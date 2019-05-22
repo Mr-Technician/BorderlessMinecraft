@@ -64,6 +64,7 @@ namespace BorderlessMinecraft
             this.label5 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -81,7 +82,7 @@ namespace BorderlessMinecraft
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(380, 195);
+            this.button1.Location = new System.Drawing.Point(380, 194);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(97, 28);
@@ -111,7 +112,7 @@ namespace BorderlessMinecraft
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(380, 148);
+            this.button3.Location = new System.Drawing.Point(380, 132);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(97, 29);
             this.button3.TabIndex = 6;
@@ -239,11 +240,22 @@ namespace BorderlessMinecraft
             this.linkLabel1.Text = "Help";
             this.linkLabel1.Visible = false;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(380, 163);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(97, 29);
+            this.button4.TabIndex = 20;
+            this.button4.Text = "Restore Window";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 302);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.label5);
@@ -266,7 +278,7 @@ namespace BorderlessMinecraft
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "Borderless Minecraft 1.0";
+            this.Text = "Borderless Minecraft 1.1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -292,6 +304,7 @@ namespace BorderlessMinecraft
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Button button4;
     }
 }
 

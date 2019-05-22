@@ -35,6 +35,7 @@ namespace BorderlessMinecraft
     public partial class Form1 : Form
     {
         Process[] minecraftProcesses; //initializes an array of processess
+
         public Form1()
         {
             InitializeComponent();
@@ -54,6 +55,7 @@ namespace BorderlessMinecraft
             listBox1.Items.Clear(); //clear the listbox on refresh
             button1.Enabled = false; //disable the button by default
             button3.Enabled = false; //disable the button by default
+            button4.Enabled = false; //disable the button by default
 
             minecraftProcesses = Program.getProcesses(); //gets the array list
             foreach (Process proc in minecraftProcesses)
@@ -67,18 +69,17 @@ namespace BorderlessMinecraft
 
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) //go borderless button
         {
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             Program.restoreWindow(handle);
             Program.setBorderless(handle);
-            Program.setPos(handle);
+            Program.setPos(handle, 0, 0, Program.getScreenRezx(), Program.getScreenRezy());
             Program.setForeground(handle);
+            //debugInstructionsLabel.Text = Program.getCurrentStyle(handle).ToString();
         }
 
-
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e) //refresh button
         {
             addProcesses();
         }
@@ -89,15 +90,16 @@ namespace BorderlessMinecraft
             {
                 button1.Enabled = true; //enable the button when a session is seleced
                 button3.Enabled = true; //enable the button when a session is seleced
+                button4.Enabled = true; //enable the button when a session is seleced
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e) //edit title button
         {
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             string currentTitle = minecraftProcesses[listBox1.SelectedIndex].MainWindowTitle; //gets the minecraft process by index, and then its title
             string title;
-            if(textBox5.Text != "") //if the textbox has content, use for title
+            if (textBox5.Text != "") //if the textbox has content, use for title
             {
                 title = currentTitle + " " + textBox5.Text;
             }
@@ -109,9 +111,20 @@ namespace BorderlessMinecraft
             addProcesses(); //after rename, refresh the list
         }
 
+        private void button4_Click(object sender, EventArgs e) //restore window button
+        {
+            IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            Program.restoreWindow(handle);
+            Program.undoBorderless(handle);
+            Program.setPos(handle, Program.getCenterx(), Program.getCentery(), Program.xDefaultRes, Program.yDefaultRes);
+            Program.setForeground(handle);
+            //debugInstructionsLabel.Text = Program.getCurrentStyle(handle).ToString();
+
+        }
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox1.Checked) //if advanced mode is on, make visible
+            if (checkBox1.Checked) //if advanced mode is on, make visible
             {
                 textBox1.Visible = true;
                 textBox2.Visible = true;
