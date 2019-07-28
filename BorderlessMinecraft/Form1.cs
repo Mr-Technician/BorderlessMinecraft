@@ -40,7 +40,17 @@ namespace BorderlessMinecraft
         {
             InitializeComponent();
             addProcesses();
-            checkBox1.Enabled = false;
+            //checkBox1.Enabled = false;
+
+            //create the ToolTip for advanced mode hover
+            ToolTip toolTip1 = new ToolTip();
+
+            toolTip1.AutoPopDelay = 5000;
+            toolTip1.InitialDelay = 1;
+            toolTip1.ReshowDelay = 500;
+            toolTip1.ShowAlways = true;
+
+            toolTip1.SetToolTip(this.checkBox1, "Enables the use of custom positioning and sizing");
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -71,10 +81,56 @@ namespace BorderlessMinecraft
 
         private void button1_Click(object sender, EventArgs e) //go borderless button
         {
+            //default values, changed by advanced mode
+            int xPos = 0;
+            int yPos = 0;
+            int xRes = Program.getScreenRezx();
+            int yRes = Program.getScreenRezy();
+
+            if (textBox1.Text != "")
+            {
+                try
+                {
+                    xPos = Convert.ToInt32(textBox1.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    xPos = 0;
+                }
+            }
+            if (textBox2.Text != "")
+            {
+                try
+                {
+                    yPos = Convert.ToInt32(textBox2.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    yPos = 0;
+                }
+            }
+            if (textBox3.Text != "")
+            {
+                try
+                {
+                    xRes = Convert.ToInt32(textBox3.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    xRes = Program.getScreenRezx();
+                }
+            }
+            if (textBox4.Text != "")
+            {
+                try
+                {
+                    yRes = Convert.ToInt32(textBox4.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    yRes = Program.getScreenRezy();
+                }
+            }
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             Program.restoreWindow(handle);
             Program.setBorderless(handle);
-            Program.setPos(handle, 0, 0, Program.getScreenRezx(), Program.getScreenRezy());
+            Program.setPos(handle, xPos, yPos, xRes, yRes);
             Program.setForeground(handle);
             //debugInstructionsLabel.Text = Program.getCurrentStyle(handle).ToString();
         }
@@ -102,6 +158,7 @@ namespace BorderlessMinecraft
             if (textBox5.Text != "") //if the textbox has content, use for title
             {
                 title = currentTitle + " " + textBox5.Text;
+
             }
             else //if the textbox is empty, use default
             {
@@ -113,10 +170,57 @@ namespace BorderlessMinecraft
 
         private void button4_Click(object sender, EventArgs e) //restore window button
         {
+            //default values, changed by advanced mode
+            int xPos = Program.getCenterx();
+            int yPos = Program.getCentery();
+            int xRes = Program.xDefaultRes;
+            int yRes = Program.yDefaultRes;
+
+            if (textBox1.Text != "")
+            {
+                try
+                {
+                    xPos = Convert.ToInt32(textBox1.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    xPos = Program.getCenterx();
+                }
+            }
+            if (textBox2.Text != "")
+            {
+                try
+                {
+                    yPos = Convert.ToInt32(textBox2.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    yPos = Program.getCentery();
+                }
+            }
+            if (textBox3.Text != "")
+            {
+                try
+                {
+                    xRes = Convert.ToInt32(textBox3.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    xRes = Program.xDefaultRes;
+                }
+            }
+            if (textBox4.Text != "")
+            {
+                try
+                {
+                    yRes = Convert.ToInt32(textBox4.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                }
+                catch {
+                    yRes = Program.yDefaultRes;
+                }
+            }
+
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             Program.restoreWindow(handle);
             Program.undoBorderless(handle);
-            Program.setPos(handle, Program.getCenterx(), Program.getCentery(), Program.xDefaultRes, Program.yDefaultRes);
+            Program.setPos(handle, xPos, yPos, xRes, yRes);
             Program.setForeground(handle);
             //debugInstructionsLabel.Text = Program.getCurrentStyle(handle).ToString();
 
@@ -137,6 +241,10 @@ namespace BorderlessMinecraft
             }
             else
             {
+                textBox1.Text = "";
+                textBox2.Text = "";
+                textBox3.Text = "";
+                textBox4.Text = "";
                 textBox1.Visible = false;
                 textBox2.Visible = false;
                 textBox3.Visible = false;

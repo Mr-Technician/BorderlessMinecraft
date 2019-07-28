@@ -48,7 +48,7 @@ namespace BorderlessMinecraft
             ArrayList processes = new ArrayList();
             foreach (Process proc in allProcesses)
             {
-                if (proc.MainWindowTitle.Contains("Minecraft") && proc.ProcessName == "javaw") //checks for Minecraft in the title and the java process
+                if (proc.MainWindowTitle.StartsWith("Minecraft") && proc.ProcessName == "javaw") //checks for Minecraft in the title and the java process
                     processes.Add(proc);
             }
             return processes.ToArray(typeof(Process)) as Process[]; //converts dynamic arraylist to static array
@@ -85,6 +85,7 @@ namespace BorderlessMinecraft
         {
             return ShowWindow(handle, SW_RESTORE); //restores the window to a normal state
         }
+
         public static int minimizeWindow(IntPtr handle)
         {
             return ShowWindow(handle, SW_MINIMIZE); //minimizes the window

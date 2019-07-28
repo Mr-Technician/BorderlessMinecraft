@@ -140,14 +140,6 @@ namespace BorderlessMinecraft
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(132, 280);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(70, 20);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.Visible = false;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -188,6 +180,15 @@ namespace BorderlessMinecraft
             this.label4.TabIndex = 13;
             this.label4.Text = "Y Size";
             this.label4.Visible = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(132, 280);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(70, 20);
+            this.textBox1.TabIndex = 9;
+            this.textBox1.Visible = false;
+            //this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // textBox2
             // 
@@ -278,7 +279,7 @@ namespace BorderlessMinecraft
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "Borderless Minecraft 1.1";
+            this.Text = "Borderless Minecraft 1.2";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
