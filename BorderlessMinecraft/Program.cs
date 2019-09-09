@@ -141,6 +141,11 @@ namespace BorderlessMinecraft
             return (Screen.PrimaryScreen.Bounds.Height / 2) - (yDefaultRes / 2); //gets the x coordinate to center the window
         }
 
+        public static int getWorkingAreaHeight()
+        {
+            return Screen.PrimaryScreen.WorkingArea.Height; //gets the size of the taskbar
+        }
+
         //debug methods
 
         public static int getCurrentStyle(IntPtr handle)

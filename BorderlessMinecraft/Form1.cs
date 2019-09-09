@@ -40,7 +40,6 @@ namespace BorderlessMinecraft
         {
             InitializeComponent();
             addProcesses();
-            //checkBox1.Enabled = false;
 
             //create the ToolTip for advanced mode hover
             ToolTip toolTip1 = new ToolTip();
@@ -50,7 +49,17 @@ namespace BorderlessMinecraft
             toolTip1.ReshowDelay = 500;
             toolTip1.ShowAlways = true;
 
-            toolTip1.SetToolTip(this.checkBox1, "Enables the use of custom positioning and sizing");
+            toolTip1.SetToolTip(this.checkBox1, "Enables the use of custom positioning and sizing.");
+
+            //
+            ToolTip toolTip2 = new ToolTip();
+
+            toolTip2.AutoPopDelay = 5000;
+            toolTip2.InitialDelay = 1;
+            toolTip2.ReshowDelay = 500;
+            toolTip2.ShowAlways = true;
+
+            toolTip2.SetToolTip(this.checkBox2, "Shows the taskbar when in borderless mode. Ignored if custom height is set.");
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -87,6 +96,12 @@ namespace BorderlessMinecraft
             int xRes = Program.getScreenRezx();
             int yRes = Program.getScreenRezy();
 
+            if (checkBox2.Checked)
+            {
+                yRes = Program.getWorkingAreaHeight(); //ignored if advanced mode is enabled
+            }
+            
+            //advanced mode checks
             if (textBox1.Text != "")
             {
                 try
