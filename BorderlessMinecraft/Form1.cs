@@ -60,6 +60,15 @@ namespace BorderlessMinecraft
             toolTip2.ShowAlways = true;
 
             toolTip2.SetToolTip(this.checkBox2, "Shows the taskbar when in borderless mode. Ignored if custom height is set.");
+
+            ToolTip toolTip3 = new ToolTip();
+
+            toolTip3.AutoPopDelay = 5000;
+            toolTip3.InitialDelay = 1;
+            toolTip3.ReshowDelay = 500;
+            toolTip3.ShowAlways = true;
+
+            toolTip3.SetToolTip(this.checkBox3, "Shows all Minecraft Java clients. This option will also show other Java apps that are currently running.");
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -76,7 +85,15 @@ namespace BorderlessMinecraft
             button3.Enabled = false; //disable the button by default
             button4.Enabled = false; //disable the button by default
 
-            minecraftProcesses = Program.getProcesses(); //gets the array list
+            if (checkBox3.Checked) //if the checkbox is checked, no title filtering will occur
+            {
+                minecraftProcesses = Program.getProcesses();
+            }
+            else //if not, filter titles by the word "minecraft"
+            {
+                minecraftProcesses = Program.getProcesses("Minecraft");
+            }
+
             foreach (Process proc in minecraftProcesses)
             {
                 listBox1.Items.Add(proc.MainWindowTitle); //adds process title to list
@@ -85,7 +102,7 @@ namespace BorderlessMinecraft
 
         private void debugInstructionsLabel_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e) //go borderless button
@@ -274,6 +291,11 @@ namespace BorderlessMinecraft
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            addProcesses(); //refresh the process list when changing the filter option
         }
     }
 }

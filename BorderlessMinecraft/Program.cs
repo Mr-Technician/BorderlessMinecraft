@@ -42,13 +42,13 @@ namespace BorderlessMinecraft
             Application.Run(new Form1());
         }
 
-        public static Process[] getProcesses()
+        public static Process[] getProcesses(string startsWith = "")
         {
             Process[] allProcesses = Process.GetProcesses(); //gets an array of all system processes
             ArrayList processes = new ArrayList();
             foreach (Process proc in allProcesses)
             {
-                if (proc.MainWindowTitle.StartsWith("Minecraft") && proc.ProcessName == "javaw") //checks for Minecraft in the title and the java process
+                if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName == "javaw") //checks for Minecraft in the title and the java process
                     processes.Add(proc);
             }
             return processes.ToArray(typeof(Process)) as Process[]; //converts dynamic arraylist to static array
