@@ -39,19 +39,31 @@ namespace BorderlessMinecraft
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Form1()
+            {
+                Text = "Borderless Minecraft 1.2.2"
+            });
         }
 
-        public static Process[] getProcesses(string startsWith = "")
+        public static Process[] getProcesses(List<int> processIDs, string startsWith = "")
         {
             Process[] allProcesses = Process.GetProcesses(); //gets an array of all system processes
-            ArrayList processes = new ArrayList();
+            List<Process> processes = new List<Process>();
             foreach (Process proc in allProcesses)
             {
-                if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName == "javaw") //checks for Minecraft in the title and the java process
+                if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName == "javaw" && !processIDs.Contains(proc.Id)) //checks for Minecraft in the title and the java process OR its handle matches
                     processes.Add(proc);
             }
-            return processes.ToArray(typeof(Process)) as Process[]; //converts dynamic arraylist to static array
+
+            foreach (int PID in processIDs)
+            {
+                try
+                {
+                    processes.Add(Process.GetProcessById(PID)); //adds each process by ID
+                }
+                catch (ArgumentException) { }
+            }
+            return processes.Distinct().ToArray() as Process[]; //converts dynamic arraylist to static array
         }
 
         [DllImport("user32.dll")]

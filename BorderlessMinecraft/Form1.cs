@@ -35,6 +35,7 @@ namespace BorderlessMinecraft
     public partial class Form1 : Form
     {
         Process[] minecraftProcesses; //initializes an array of processess
+        List<int> renamedProcesses = new List<int>(); //PIDs that are renamed
 
         public Form1()
         {
@@ -87,11 +88,11 @@ namespace BorderlessMinecraft
 
             if (checkBox3.Checked) //if the checkbox is checked, no title filtering will occur
             {
-                minecraftProcesses = Program.getProcesses();
+                minecraftProcesses = Program.getProcesses(renamedProcesses);
             }
             else //if not, filter titles by the word "minecraft"
             {
-                minecraftProcesses = Program.getProcesses("Minecraft");
+                minecraftProcesses = Program.getProcesses(renamedProcesses, "Minecraft");
             }
 
             foreach (Process proc in minecraftProcesses)
@@ -185,11 +186,12 @@ namespace BorderlessMinecraft
         private void button3_Click(object sender, EventArgs e) //edit title button
         {
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            int PID = minecraftProcesses[listBox1.SelectedIndex].Id;
             string currentTitle = minecraftProcesses[listBox1.SelectedIndex].MainWindowTitle; //gets the minecraft process by index, and then its title
             string title;
             if (textBox5.Text != "") //if the textbox has content, use for title
             {
-                title = currentTitle + " " + textBox5.Text;
+                title = textBox5.Text;
 
             }
             else //if the textbox is empty, use default
@@ -197,7 +199,13 @@ namespace BorderlessMinecraft
                 title = currentTitle + " (Second Account)";
             }
             Program.setTitle(handle, title);
+            if (!renamedProcesses.Contains(PID)) //if the renamed handle is not currently stored, add it. This allows borderless minecraft to detect windows that have been renamed
+            {
+                renamedProcesses.Add(PID);
+            }
+
             addProcesses(); //after rename, refresh the list
+            textBox5.Text = ""; //reset text
         }
 
         private void button4_Click(object sender, EventArgs e) //restore window button
