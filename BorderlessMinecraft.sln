@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorderlessMinecraft", "BorderlessMinecraft\BorderlessMinecraft.csproj", "{BDEAD1E6-2134-40A6-AC64-96BBC0DA5D66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorderlessMinecraft2", "BorderlessMinecraft2\BorderlessMinecraft2.csproj", "{D1B044F2-5405-4742-90D9-F2EAFF686FA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BDEAD1E6-2134-40A6-AC64-96BBC0DA5D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDEAD1E6-2134-40A6-AC64-96BBC0DA5D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDEAD1E6-2134-40A6-AC64-96BBC0DA5D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B044F2-5405-4742-90D9-F2EAFF686FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B044F2-5405-4742-90D9-F2EAFF686FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B044F2-5405-4742-90D9-F2EAFF686FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B044F2-5405-4742-90D9-F2EAFF686FA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
