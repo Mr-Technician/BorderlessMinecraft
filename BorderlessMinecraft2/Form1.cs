@@ -12,9 +12,11 @@ namespace BorderlessMinecraft2
 {
     public partial class Form1 : Form
     {
+        private BorderlessMinecraft borderlessMinecraft; //stores a reference to the main object
         public Form1()
         {
             InitializeComponent();
+            borderlessMinecraft = new BorderlessMinecraft(); //initialize object
         }
 
     }
