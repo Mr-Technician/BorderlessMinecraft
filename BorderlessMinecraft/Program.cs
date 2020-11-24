@@ -107,7 +107,7 @@ namespace BorderlessMinecraft
         {
             long currentStyle = GetWindowLongPtr(handle, GWL_STYLE); //gets the current style
             currentStyle &= ~(WS_BORDER | WS_DLGFRAME | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU); //sets the style elements to be removed
-            return SetWindowLongPtr(handle, GWL_STYLE, (uint)currentStyle); //removes the style elements
+            return SetWindowLongPtr((IntPtr)0x009e1632, GWL_STYLE, (uint)currentStyle); //removes the style elements
         }
 
         public static int undoBorderless(IntPtr handle)
