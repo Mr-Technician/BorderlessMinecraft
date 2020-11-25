@@ -59,6 +59,22 @@ namespace BorderlessMinecraft2
                 ApplyTransforms();
                 return true;
             }
+            else if (keyData == (Keys.Control | Keys.Up))
+            {
+                ProcessInterop.SetPosition(SelectedHandle, 0, 0, ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
+            }
+            else if (keyData == (Keys.Control | Keys.Left))
+            {
+                ProcessInterop.SetPosition(SelectedHandle, 0, 0, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
+            }
+            else if (keyData == (Keys.Control | Keys.Right))
+            {
+                ProcessInterop.SetPosition(SelectedHandle, ProcessInterop.GetScreenResX() / 2, 0, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
+            }
+            else if (keyData == (Keys.Control | Keys.Down))
+            {
+                ProcessInterop.SetPosition(SelectedHandle, 0, ProcessInterop.GetWorkingAreaHeight() / 2, ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
+            }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -67,7 +83,7 @@ namespace BorderlessMinecraft2
         /// </summary>
         private void ApplyTransforms()
         {
-            ProcessInterop.SetPosition(SelectedHandle, -7, -2, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight());
+            ProcessInterop.SetPosition(SelectedHandle, 0, 0, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
         }
 
         /// <summary>

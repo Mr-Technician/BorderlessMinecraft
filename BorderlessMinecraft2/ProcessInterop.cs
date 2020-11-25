@@ -40,17 +40,22 @@ namespace BorderlessMinecraft2
         private static readonly uint SWP_NOZORDER = 0x0004; //const for setPos
 
         /// <summary>
+        /// All position and sizing values will be adjusted by this value
+        /// </summary>
+        private static readonly int Modifier = 7;
+
+        /// <summary>
         /// The default style of the Minecraft window
         /// </summary>
-        private const uint styleCache = 382664704;
+        private static readonly uint styleCache = 382664704;
         /// <summary>
         /// The default width of a restored window
         /// </summary>
-        public const int xDefaultRes = 900;
+        public static readonly int xDefaultRes = 900;
         /// <summary>
         /// The default height of a restored window
         /// </summary>
-        public const int yDefaultRes = 520;
+        public static readonly int yDefaultRes = 520;
 
         /// <summary>
         /// Restores the provided window handle to default
@@ -90,9 +95,16 @@ namespace BorderlessMinecraft2
         /// Sets the provided handle position
         /// </summary>
         /// <returns></returns>
-        public static bool SetPosition(IntPtr handle, int xPos, int yPos, int xRes, int yRes)
+        public static bool SetPosition(IntPtr handle, int xPos, int yPos, int xRes, int yRes, bool WindowIsBorderless = true)
         {
-            return SetWindowPos(handle, handle, xPos, yPos, xRes, yRes, SWP_NOZORDER); //sets the minecraft window to the 
+            if (WindowIsBorderless) //a borderless window has no invisible padding
+            {
+                return SetWindowPos(handle, handle, xPos, yPos, xRes, yRes, SWP_NOZORDER); //sets the minecraft window to the provided position
+            }
+            else
+            {
+                return SetWindowPos(handle, handle, xPos - Modifier, yPos, xRes + (Modifier * 2), yRes + Modifier, SWP_NOZORDER); //sets the minecraft window to the provided position
+            }            
         }
         /// <summary>
         /// Sets the provided handle to the foreground
