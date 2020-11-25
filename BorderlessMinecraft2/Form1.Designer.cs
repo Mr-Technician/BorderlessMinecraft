@@ -48,6 +48,7 @@ namespace BorderlessMinecraft2
             this.yPositionLabel = new System.Windows.Forms.Label();
             this.xPositionLabel = new System.Windows.Forms.Label();
             this.AdvancedModePanel = new System.Windows.Forms.Panel();
+            this.ApplyTransform = new System.Windows.Forms.Button();
             this.AdvancedModePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -227,11 +228,22 @@ namespace BorderlessMinecraft2
             this.AdvancedModePanel.Size = new System.Drawing.Size(332, 62);
             this.AdvancedModePanel.TabIndex = 18;
             // 
+            // ApplyTransform
+            // 
+            this.ApplyTransform.Location = new System.Drawing.Point(499, 51);
+            this.ApplyTransform.Name = "ApplyTransform";
+            this.ApplyTransform.Size = new System.Drawing.Size(110, 23);
+            this.ApplyTransform.TabIndex = 19;
+            this.ApplyTransform.Text = "Apply Positioning";
+            this.ApplyTransform.UseVisualStyleBackColor = true;
+            this.ApplyTransform.Click += new System.EventHandler(this.ApplyTransform_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.ApplyTransform);
             this.Controls.Add(this.AdvancedModePanel);
             this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.MainLabel);
@@ -273,6 +285,7 @@ namespace BorderlessMinecraft2
         private System.Windows.Forms.Label yPositionLabel;
         private System.Windows.Forms.Label xPositionLabel;
         private System.Windows.Forms.Panel AdvancedModePanel;
+        private System.Windows.Forms.Button ApplyTransform;
     }
 }
 

@@ -53,12 +53,21 @@ namespace BorderlessMinecraft2
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) //test copied from https://stackoverflow.com/a/400325/14024210
         {
-            if (keyData == (Keys.Control | Keys.F))
+            if (keyData == (Keys.Control | Keys.A))
             {
-                MessageBox.Show("What the Ctrl+F?");
+                //MessageBox.Show("What the Ctrl+F?");
+                ApplyTransforms();
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        /// <summary>
+        /// Transforms the selected window
+        /// </summary>
+        private void ApplyTransforms()
+        {
+            ProcessInterop.SetPosition(SelectedHandle, -7, -2, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight());
         }
 
         /// <summary>
@@ -158,6 +167,11 @@ namespace BorderlessMinecraft2
         private void AdvancedModeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             AdvancedModePanel.Visible = (sender as CheckBox).Checked; //toggle visibiity of advanced mode buttons
+        }
+
+        private void ApplyTransform_Click(object sender, EventArgs e)
+        {
+            ApplyTransforms();
         }
     }
 }
