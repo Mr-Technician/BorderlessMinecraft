@@ -29,9 +29,14 @@ namespace BorderlessMinecraft2
         /// If true, the working height will be used instead of the screen height
         /// </summary>
         private bool PreserveTaskbar;
+        /// <summary>
+        /// The grid size to use for window snapping
+        /// </summary>
+        private int GridSize;
 
         public Form1()
         {
+            GridSize = 2; //default gride size
             KeyPreview = true; //required for key listening
             InitializeComponent();
             AdvancedModePanel.Visible = false; //hide controls by default
@@ -53,28 +58,35 @@ namespace BorderlessMinecraft2
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) //test copied from https://stackoverflow.com/a/400325/14024210
         {
-            if (keyData == (Keys.Control | Keys.A))
-            {
-                //MessageBox.Show("What the Ctrl+F?");
-                ApplyTransforms();
-                return true;
-            }
-            else if (keyData == (Keys.Control | Keys.Up))
-            {
-                ProcessInterop.SetPosition(SelectedHandle, 0, 0, ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
-            }
-            else if (keyData == (Keys.Control | Keys.Left))
-            {
-                ProcessInterop.SetPosition(SelectedHandle, 0, 0, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
-            }
-            else if (keyData == (Keys.Control | Keys.Right))
-            {
-                ProcessInterop.SetPosition(SelectedHandle, ProcessInterop.GetScreenResX() / 2, 0, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
-            }
-            else if (keyData == (Keys.Control | Keys.Down))
-            {
-                ProcessInterop.SetPosition(SelectedHandle, 0, ProcessInterop.GetWorkingAreaHeight() / 2, ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
-            }
+            //if (!ProcessInterop.WindowIsSnapped(SelectedHandle, GridSize)) //if window is not snapped, snap it to upper left corner
+            //{
+            //    ProcessInterop.SetPosition(SelectedHandle, 0, 0, (ProcessInterop.GetScreenResX() / GridSize), ProcessInterop.GetWorkingAreaHeight() / GridSize, false);
+            //}
+
+            //ProcessInterop.Dimensions dimensions = ProcessInterop.GetWindowDimensions(SelectedHandle); //get the current screen corners
+
+            //if (keyData == (Keys.Control | Keys.A))
+            //{
+            //    //MessageBox.Show("What the Ctrl+F?");
+            //    ApplyTransforms();
+            //    return true;
+            //}
+            //else if (keyData == (Keys.Control | Keys.Up))
+            //{
+            //    ProcessInterop.SetPosition(SelectedHandle, dimensions.X, dimensions.Y - (ProcessInterop.GetScreenResX() / 2), ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
+            //}
+            //else if (keyData == (Keys.Control | Keys.Left))
+            //{
+            //    ProcessInterop.SetPosition(SelectedHandle, dimensions.X - (ProcessInterop.GetScreenResX() / 2), dimensions.Y, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
+            //}
+            //else if (keyData == (Keys.Control | Keys.Right))
+            //{
+            //    ProcessInterop.SetPosition(SelectedHandle, ProcessInterop.GetScreenResX() / 2, dimensions.Y, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
+            //}
+            //else if (keyData == (Keys.Control | Keys.Down))
+            //{
+            //    ProcessInterop.SetPosition(SelectedHandle, dimensions.X, dimensions.Y + (ProcessInterop.GetWorkingAreaHeight() / 2), ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
+            //}
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -164,7 +176,7 @@ namespace BorderlessMinecraft2
         {
             ProcessInterop.RestoreWindow(SelectedHandle);
             ProcessInterop.UndoBorderless(SelectedHandle);
-            ProcessInterop.SetPosition(SelectedHandle, ProcessInterop.GetCenterX(), ProcessInterop.GetCenterY(), ProcessInterop.xDefaultRes, ProcessInterop.yDefaultRes);
+            ProcessInterop.SetPosition(SelectedHandle, ProcessInterop.GetCenterX(), ProcessInterop.GetCenterY(), ProcessInterop.xDefaultRes, ProcessInterop.yDefaultRes, false);
         }
 
         private void TitleButton_Click(object sender, EventArgs e)

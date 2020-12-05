@@ -13,6 +13,36 @@ namespace BorderlessMinecraft2
     /// </summary>
     public static class ProcessInterop
     {
+        /// <summary>
+        /// Represents the height and width of a window
+        /// </summary>
+        public struct Dimensions
+        {
+            private Rect Rect { get; set; }
+            public int X { get => Rect.Left; }
+            public int Y { get => Rect.Top; }
+            public int Height { get => Rect.Bottom - Rect.Top; }
+            public int Width { get => Rect.Right - Rect.Left; }
+            public int AdjustedHeight { get => Height - Modifier; }
+            public int AdjustedWidth { get => Width - (Modifier * 2); }
+
+            public Dimensions(Rect rect)
+            {
+                Rect = rect;
+            }
+        }
+
+        /// <summary>
+        /// Represents the corners of a window
+        /// </summary>
+        public struct Rect
+        {
+            public int Left { get; set; }
+            public int Top { get; set; }
+            public int Right { get; set; }
+            public int Bottom { get; set; }
+        }
+
         [DllImport("user32.dll")]
         private static extern int ShowWindow(IntPtr hWnd, uint Msg); //restores the window
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
@@ -25,6 +55,8 @@ namespace BorderlessMinecraft2
         private static extern bool SetForegroundWindow(IntPtr hWnd); //sets the window to the foreground
         [DllImport("user32.dll")]
         private static extern bool SetWindowText(IntPtr hWnd, string title); //changes the window title
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle); //gets the current window position
 
         private static readonly uint SW_RESTORE = 0x09; //const for restoreWindow
         private static readonly uint SW_MINIMIZE = 0x06;
@@ -51,11 +83,11 @@ namespace BorderlessMinecraft2
         /// <summary>
         /// The default width of a restored window
         /// </summary>
-        public static readonly int xDefaultRes = 900;
+        public static readonly int xDefaultRes = 854 + (Modifier * 2);
         /// <summary>
         /// The default height of a restored window
         /// </summary>
-        public static readonly int yDefaultRes = 520;
+        public static readonly int yDefaultRes = 480 + Modifier;
 
         /// <summary>
         /// Restores the provided window handle to default
@@ -104,7 +136,7 @@ namespace BorderlessMinecraft2
             else
             {
                 return SetWindowPos(handle, handle, xPos - Modifier, yPos, xRes + (Modifier * 2), yRes + Modifier, SWP_NOZORDER); //sets the minecraft window to the provided position
-            }            
+            }
         }
         /// <summary>
         /// Sets the provided handle to the foreground
@@ -124,6 +156,31 @@ namespace BorderlessMinecraft2
         public static bool SetTitle(IntPtr handle, string title)
         {
             return SetWindowText(handle, title); //sets the window title
+        }
+
+        /// <summary>
+        /// Returns the position of the current window
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <returns></returns>
+        public static Dimensions GetWindowDimensions(IntPtr handle)
+        {
+            Rect rect = new Rect();
+            GetWindowRect(handle, ref rect);
+            return new Dimensions(rect);
+        }
+
+        /// <summary>
+        /// Returns true if the current window is snapped according to the current gride sizw
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <returns></returns>
+        public static bool WindowIsSnapped(IntPtr handle, int gridSize)
+        {
+            Dimensions dimensions = GetWindowDimensions(handle);
+            int modX = dimensions.AdjustedWidth % (GetScreenResX() / gridSize);
+            int modY = dimensions.AdjustedHeight % (GetWorkingAreaHeight() / gridSize);
+            return modX == 0 && modY == 0; //return true if the screen width mod snap quadrant size is 0 on both dimensions. If false, the window is not snapped
         }
 
         /// <summary>
