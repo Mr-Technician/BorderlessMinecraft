@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static BorderlessMinecraft2.WindowSnap;
 
 namespace BorderlessMinecraft2
 {
@@ -58,44 +59,45 @@ namespace BorderlessMinecraft2
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) //test copied from https://stackoverflow.com/a/400325/14024210
         {
-            //if (!ProcessInterop.WindowIsSnapped(SelectedHandle, GridSize)) //if window is not snapped, snap it to upper left corner
-            //{
-            //    ProcessInterop.SetPosition(SelectedHandle, 0, 0, (ProcessInterop.GetScreenResX() / GridSize), ProcessInterop.GetWorkingAreaHeight() / GridSize, false);
-            //}
+            SnapOptions snap = default;
 
-            //ProcessInterop.Dimensions dimensions = ProcessInterop.GetWindowDimensions(SelectedHandle); //get the current screen corners
+            //process key command and assign enum accordingly
+            if (keyData == (Keys.Control | Keys.Up))
+            {
+                snap = SnapOptions.ShiftUp;                
+            }
+            else if (keyData == (Keys.Control | Keys.Down))
+            {
+                snap = SnapOptions.ShiftDown;
+            }
+            else if (keyData == (Keys.Control | Keys.Right))
+            {
+                snap = SnapOptions.ShiftRight;
+            }
+            else if (keyData == (Keys.Control | Keys.Left))
+            {
+                snap = SnapOptions.ShiftLeft;                
+            }
+            else if (keyData == (Keys.Shift | Keys.Up))
+            {
+                snap = SnapOptions.ExpandUp;
+            }
+            else if (keyData == (Keys.Shift | Keys.Down))
+            {
+                snap = SnapOptions.ExpandDown;
+            }
+            else if (keyData == (Keys.Shift | Keys.Right))
+            {
+                snap = SnapOptions.ExpandRight;
+            }
+            else if (keyData == (Keys.Shift | Keys.Left))
+            {
+                snap = SnapOptions.ExpandLeft;
+            }
 
-            //if (keyData == (Keys.Control | Keys.A))
-            //{
-            //    //MessageBox.Show("What the Ctrl+F?");
-            //    ApplyTransforms();
-            //    return true;
-            //}
-            //else if (keyData == (Keys.Control | Keys.Up))
-            //{
-            //    ProcessInterop.SetPosition(SelectedHandle, dimensions.X, dimensions.Y - (ProcessInterop.GetScreenResX() / 2), ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
-            //}
-            //else if (keyData == (Keys.Control | Keys.Left))
-            //{
-            //    ProcessInterop.SetPosition(SelectedHandle, dimensions.X - (ProcessInterop.GetScreenResX() / 2), dimensions.Y, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
-            //}
-            //else if (keyData == (Keys.Control | Keys.Right))
-            //{
-            //    ProcessInterop.SetPosition(SelectedHandle, ProcessInterop.GetScreenResX() / 2, dimensions.Y, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
-            //}
-            //else if (keyData == (Keys.Control | Keys.Down))
-            //{
-            //    ProcessInterop.SetPosition(SelectedHandle, dimensions.X, dimensions.Y + (ProcessInterop.GetWorkingAreaHeight() / 2), ProcessInterop.GetScreenResX(), ProcessInterop.GetWorkingAreaHeight() / 2, false);
-            //}
+            HandleKeyboardInput(SelectedHandle, snap, GridSize); //pass enum value to method
+
             return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        /// <summary>
-        /// Transforms the selected window
-        /// </summary>
-        private void ApplyTransforms()
-        {
-            ProcessInterop.SetPosition(SelectedHandle, 0, 0, ProcessInterop.GetScreenResX() / 2, ProcessInterop.GetWorkingAreaHeight(), false);
         }
 
         /// <summary>
@@ -195,11 +197,6 @@ namespace BorderlessMinecraft2
         private void AdvancedModeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             AdvancedModePanel.Visible = (sender as CheckBox).Checked; //toggle visibiity of advanced mode buttons
-        }
-
-        private void ApplyTransform_Click(object sender, EventArgs e)
-        {
-            ApplyTransforms();
         }
     }
 }

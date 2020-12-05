@@ -48,7 +48,6 @@ namespace BorderlessMinecraft2
             this.yPositionLabel = new System.Windows.Forms.Label();
             this.xPositionLabel = new System.Windows.Forms.Label();
             this.AdvancedModePanel = new System.Windows.Forms.Panel();
-            this.ApplyTransform = new System.Windows.Forms.Button();
             this.AdvancedModePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,7 +55,7 @@ namespace BorderlessMinecraft2
             // 
             this.ProcessList.FormattingEnabled = true;
             this.ProcessList.ItemHeight = 15;
-            this.ProcessList.Location = new System.Drawing.Point(12, 51);
+            this.ProcessList.Location = new System.Drawing.Point(12, 25);
             this.ProcessList.Name = "ProcessList";
             this.ProcessList.Size = new System.Drawing.Size(299, 109);
             this.ProcessList.TabIndex = 0;
@@ -64,7 +63,7 @@ namespace BorderlessMinecraft2
             // 
             // RefreshButton
             // 
-            this.RefreshButton.Location = new System.Drawing.Point(317, 51);
+            this.RefreshButton.Location = new System.Drawing.Point(317, 25);
             this.RefreshButton.Name = "RefreshButton";
             this.RefreshButton.Size = new System.Drawing.Size(90, 25);
             this.RefreshButton.TabIndex = 1;
@@ -74,7 +73,7 @@ namespace BorderlessMinecraft2
             // 
             // TitleButton
             // 
-            this.TitleButton.Location = new System.Drawing.Point(317, 80);
+            this.TitleButton.Location = new System.Drawing.Point(317, 54);
             this.TitleButton.Name = "TitleButton";
             this.TitleButton.Size = new System.Drawing.Size(90, 25);
             this.TitleButton.TabIndex = 2;
@@ -84,7 +83,7 @@ namespace BorderlessMinecraft2
             // 
             // RestoreButton
             // 
-            this.RestoreButton.Location = new System.Drawing.Point(317, 109);
+            this.RestoreButton.Location = new System.Drawing.Point(317, 83);
             this.RestoreButton.Name = "RestoreButton";
             this.RestoreButton.Size = new System.Drawing.Size(90, 25);
             this.RestoreButton.TabIndex = 3;
@@ -94,7 +93,7 @@ namespace BorderlessMinecraft2
             // 
             // BorderlessButton
             // 
-            this.BorderlessButton.Location = new System.Drawing.Point(317, 138);
+            this.BorderlessButton.Location = new System.Drawing.Point(317, 112);
             this.BorderlessButton.Name = "BorderlessButton";
             this.BorderlessButton.Size = new System.Drawing.Size(90, 25);
             this.BorderlessButton.TabIndex = 4;
@@ -133,7 +132,7 @@ namespace BorderlessMinecraft2
             // AdvancedModeCheckBox
             // 
             this.AdvancedModeCheckBox.AutoSize = true;
-            this.AdvancedModeCheckBox.Location = new System.Drawing.Point(317, 189);
+            this.AdvancedModeCheckBox.Location = new System.Drawing.Point(317, 163);
             this.AdvancedModeCheckBox.Name = "AdvancedModeCheckBox";
             this.AdvancedModeCheckBox.Size = new System.Drawing.Size(151, 19);
             this.AdvancedModeCheckBox.TabIndex = 9;
@@ -144,7 +143,7 @@ namespace BorderlessMinecraft2
             // PreserveTaskbarCheckBox
             // 
             this.PreserveTaskbarCheckBox.AutoSize = true;
-            this.PreserveTaskbarCheckBox.Location = new System.Drawing.Point(317, 167);
+            this.PreserveTaskbarCheckBox.Location = new System.Drawing.Point(317, 141);
             this.PreserveTaskbarCheckBox.Name = "PreserveTaskbarCheckBox";
             this.PreserveTaskbarCheckBox.Size = new System.Drawing.Size(112, 19);
             this.PreserveTaskbarCheckBox.TabIndex = 10;
@@ -154,7 +153,7 @@ namespace BorderlessMinecraft2
             // 
             // TitleTextBox
             // 
-            this.TitleTextBox.Location = new System.Drawing.Point(134, 165);
+            this.TitleTextBox.Location = new System.Drawing.Point(134, 139);
             this.TitleTextBox.Name = "TitleTextBox";
             this.TitleTextBox.Size = new System.Drawing.Size(177, 23);
             this.TitleTextBox.TabIndex = 11;
@@ -162,7 +161,7 @@ namespace BorderlessMinecraft2
             // MainLabel
             // 
             this.MainLabel.AutoSize = true;
-            this.MainLabel.Location = new System.Drawing.Point(12, 33);
+            this.MainLabel.Location = new System.Drawing.Point(12, 7);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(253, 15);
             this.MainLabel.TabIndex = 12;
@@ -171,7 +170,7 @@ namespace BorderlessMinecraft2
             // TitleLabel
             // 
             this.TitleLabel.AutoSize = true;
-            this.TitleLabel.Location = new System.Drawing.Point(12, 167);
+            this.TitleLabel.Location = new System.Drawing.Point(12, 141);
             this.TitleLabel.Name = "TitleLabel";
             this.TitleLabel.Size = new System.Drawing.Size(116, 15);
             this.TitleLabel.TabIndex = 13;
@@ -223,27 +222,16 @@ namespace BorderlessMinecraft2
             this.AdvancedModePanel.Controls.Add(this.ySizeLabel);
             this.AdvancedModePanel.Controls.Add(this.CustomYSize);
             this.AdvancedModePanel.Controls.Add(this.xSizeLabel);
-            this.AdvancedModePanel.Location = new System.Drawing.Point(12, 214);
+            this.AdvancedModePanel.Location = new System.Drawing.Point(12, 188);
             this.AdvancedModePanel.Name = "AdvancedModePanel";
             this.AdvancedModePanel.Size = new System.Drawing.Size(332, 62);
             this.AdvancedModePanel.TabIndex = 18;
-            // 
-            // ApplyTransform
-            // 
-            this.ApplyTransform.Location = new System.Drawing.Point(499, 51);
-            this.ApplyTransform.Name = "ApplyTransform";
-            this.ApplyTransform.Size = new System.Drawing.Size(110, 23);
-            this.ApplyTransform.TabIndex = 19;
-            this.ApplyTransform.Text = "Apply Positioning";
-            this.ApplyTransform.UseVisualStyleBackColor = true;
-            this.ApplyTransform.Click += new System.EventHandler(this.ApplyTransform_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.ApplyTransform);
+            this.ClientSize = new System.Drawing.Size(483, 253);
             this.Controls.Add(this.AdvancedModePanel);
             this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.MainLabel);
@@ -285,7 +273,6 @@ namespace BorderlessMinecraft2
         private System.Windows.Forms.Label yPositionLabel;
         private System.Windows.Forms.Label xPositionLabel;
         private System.Windows.Forms.Panel AdvancedModePanel;
-        private System.Windows.Forms.Button ApplyTransform;
     }
 }
 
