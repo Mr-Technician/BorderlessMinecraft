@@ -95,7 +95,7 @@ namespace BorderlessMinecraft2
                 snap = SnapOptions.ExpandLeft;
             }
 
-            HandleKeyboardInput(SelectedHandle, snap, GridSize); //pass enum value to method
+            //HandleKeyboardInput(SelectedHandle, snap, GridSize); //pass enum value to method
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
