@@ -34,7 +34,7 @@ namespace BorderlessMinecraft2
         }        
 
         /// <summary>
-        /// Gets all currently running processes and saves MC processes to the list
+        /// Gets all currently running processes and saves java processes to the list
         /// </summary>
         private void LoadProcesses(string startsWith = "")
         {
