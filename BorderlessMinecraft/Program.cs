@@ -51,8 +51,8 @@ namespace BorderlessMinecraft
             List<Process> processes = new List<Process>();
             foreach (Process proc in allProcesses)
             {
-                if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName == "javaw" && !processIDs.Contains(proc.Id)) //checks for Minecraft in the title and the java process OR its handle matches
-                    processes.Add(proc);
+                if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName.Contains("java") && !string.IsNullOrWhiteSpace(proc.MainWindowTitle) && !processIDs.Contains(proc.Id)) //checks the java process and non empty titles OR its handle matches
+                    processes.Add(proc);                
             }
 
             foreach (int PID in processIDs)
