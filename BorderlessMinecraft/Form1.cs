@@ -92,7 +92,7 @@ namespace BorderlessMinecraft
             }
             else //if not, filter titles by the word "minecraft"
             {
-                minecraftProcesses = Program.getProcesses(renamedProcesses, "Minecraft");
+                minecraftProcesses = Program.getProcesses(renamedProcesses, new string[] { "Minecraft", "Wynncraft"});
             }
 
             foreach (Process proc in minecraftProcesses)

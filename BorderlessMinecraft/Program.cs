@@ -44,15 +44,17 @@ namespace BorderlessMinecraft
                 Text = "Borderless Minecraft 1.2.3"
             });
         }
-
-        public static Process[] getProcesses(List<int> processIDs, string startsWith = "")
+        public static Process[] getProcesses(List<int> processIDs, string[] startsWith = null)
         {
             Process[] allProcesses = Process.GetProcesses(); //gets an array of all system processes
             List<Process> processes = new List<Process>();
             foreach (Process proc in allProcesses)
             {
-                if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName.Contains("java") && !string.IsNullOrWhiteSpace(proc.MainWindowTitle) && !processIDs.Contains(proc.Id)) //checks the java process and non empty titles OR its handle matches
-                    processes.Add(proc);                
+                for (int i = 0; i < startsWith.Length; i++)
+                {
+                    if (proc.MainWindowTitle.StartsWith(startsWith[i]) && proc.ProcessName.Contains("java") && !string.IsNullOrWhiteSpace(proc.MainWindowTitle) && !processIDs.Contains(proc.Id)) //checks the java process and non empty titles OR its handle matches
+                        processes.Add(proc);
+                }     
             }
 
             foreach (int PID in processIDs)
