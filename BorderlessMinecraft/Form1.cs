@@ -88,7 +88,7 @@ namespace BorderlessMinecraft
 
             if (checkBox3.Checked) //if the checkbox is checked, no title filtering will occur
             {
-                minecraftProcesses = Program.getProcesses(renamedProcesses);
+                minecraftProcesses = Program.getProcesses(renamedProcesses, new string[] { "Minecraft", "Wynncraft" });
             }
             else //if not, filter titles by the word "minecraft"
             {

@@ -41,7 +41,7 @@ namespace BorderlessMinecraft
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1()
             {
-                Text = "Borderless Minecraft 1.2.3"
+                Text = "Borderless Minecraft 1.2.4"
             });
         }
         public static Process[] getProcesses(List<int> processIDs, string[] startsWith = null)
