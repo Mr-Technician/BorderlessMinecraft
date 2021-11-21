@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Collections;
+using System.Management;
 
 namespace BorderlessMinecraft
 {
@@ -41,7 +42,7 @@ namespace BorderlessMinecraft
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1()
             {
-                Text = "Borderless Minecraft 1.2.3"
+                Text = "Borderless Minecraft 1.2.4-alpha"
             });
         }
 
@@ -52,7 +53,7 @@ namespace BorderlessMinecraft
             foreach (Process proc in allProcesses)
             {
                 if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName.Contains("java") && !string.IsNullOrWhiteSpace(proc.MainWindowTitle) && !processIDs.Contains(proc.Id)) //checks the java process and non empty titles OR its handle matches
-                    processes.Add(proc);                
+                    processes.Add(proc);
             }
 
             foreach (int PID in processIDs)
@@ -79,81 +80,94 @@ namespace BorderlessMinecraft
         [DllImport("user32.dll")]
         private static extern bool SetWindowText(IntPtr hWnd, string title); //changes the window title
 
-        private static uint SW_RESTORE = 0x09; //const for restoreWindow
-        private static uint SW_MINIMIZE = 0x06;
+        private static readonly uint SW_RESTORE = 0x09; //const for restoreWindow
+        private static readonly uint SW_MINIMIZE = 0x06;
 
         //sets the necessary constants for setBorderless
-        private static int GWL_STYLE = -16;
-        private static int WS_BORDER = 0x00800000;
-        private static int WS_THICKFRAME = 0x00040000;
-        private static int WS_MINIMIZEBOX = 0x00020000;
-        private static int WS_MAXIMIZEBOX = 0x00010000;
-        private static int WS_SYSMENU = 0x00800000;
-        private static int WS_DLGFRAME = 0x00400000;
+        private static readonly int GWL_STYLE = -16;
+        private static readonly int WS_BORDER = 0x00800000;
+        private static readonly int WS_THICKFRAME = 0x00040000;
+        private static readonly int WS_MINIMIZEBOX = 0x00020000;
+        private static readonly int WS_MAXIMIZEBOX = 0x00010000;
+        private static readonly int WS_SYSMENU = 0x00800000;
+        private static readonly int WS_DLGFRAME = 0x00400000;
 
-        private static uint SWP_NOZORDER = 0x0004; //const for setPos
+        private static readonly uint SWP_NOZORDER = 0x0004; //const for setPos
 
-        public static int restoreWindow(IntPtr handle)
+        /// <summary>
+        /// A helper method that calls other methods internally
+        /// </summary>ram>
+        /// <returns></returns>
+        public static void GoBorderless(IntPtr handle, int xPos, int yPos, int xRes, int yRes)
+        {
+            RestoreWindow(handle);
+            SetBorderless(handle);
+            SetPos(handle, xPos, yPos, xRes, yRes);
+            
+            SetForeground(handle);
+        }
+
+        public static int RestoreWindow(IntPtr handle)
         {
             return ShowWindow(handle, SW_RESTORE); //restores the window to a normal state
         }
 
-        public static int minimizeWindow(IntPtr handle)
+        public static int MinimizeWindow(IntPtr handle)
         {
             return ShowWindow(handle, SW_MINIMIZE); //minimizes the window
         }
 
-        public static int setBorderless(IntPtr handle)
+        public static int SetBorderless(IntPtr handle)
         {
             long currentStyle = GetWindowLongPtr(handle, GWL_STYLE); //gets the current style
             currentStyle &= ~(WS_BORDER | WS_DLGFRAME | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU); //sets the style elements to be removed
             return SetWindowLongPtr(handle, GWL_STYLE, (uint)currentStyle); //removes the style elements
         }
 
-        public static int undoBorderless(IntPtr handle)
+        public static int UndoBorderless(IntPtr handle)
         {
             //return SetWindowLongPtr(handle, GWL_STYLE, (uint)styleCache); //adds the style elements
             return SetWindowLongPtr(handle, GWL_STYLE, styleCache); //adds the style elements
         }
 
-        public static bool setPos(IntPtr handle, int xPos, int yPos, int xRes, int yRes)
+        public static bool SetPos(IntPtr handle, int xPos, int yPos, int xRes, int yRes)
         {
             return SetWindowPos(handle, handle, xPos, yPos, xRes, yRes, SWP_NOZORDER); //sets the minecraft window to the 
         }
 
-        public static bool setForeground(IntPtr handle)
+        public static bool SetForeground(IntPtr handle)
         {
             return SetForegroundWindow(handle); //places the Minecraft window at the foreground
         }
 
-        public static bool setTitle(IntPtr handle, string title)
+        public static bool SetTitle(IntPtr handle, string title)
         {
             return SetWindowText(handle, title); //sets the window title
         }
 
         //helper methods
 
-        public static int getScreenRezx()
+        public static int GetScreenRezx()
         {
             return Screen.PrimaryScreen.Bounds.Width; //returns screen width
         }
 
-        public static int getScreenRezy()
+        public static int GetScreenRezy()
         {
             return Screen.PrimaryScreen.Bounds.Height; //returns screen height
         }
 
-        public static int getCenterx()
+        public static int GetCenterx()
         {
             return (Screen.PrimaryScreen.Bounds.Width / 2) - (xDefaultRes / 2); //gets the x coordinate to center the window
         }
 
-        public static int getCentery()
+        public static int GetCentery()
         {
             return (Screen.PrimaryScreen.Bounds.Height / 2) - (yDefaultRes / 2); //gets the x coordinate to center the window
         }
 
-        public static int getWorkingAreaHeight()
+        public static int GetWorkingAreaHeight()
         {
             return Screen.PrimaryScreen.WorkingArea.Height; //gets the size of the taskbar
         }
