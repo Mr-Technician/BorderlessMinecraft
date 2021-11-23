@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -23,8 +24,15 @@ namespace BorderlessMinecraft.Processes
         {
             try
             {
-                StartEventWatcher.Start();
-                StopEventWatcher.Start();
+                if (Program.IsUserAnAdmin()) //check if the current user is an admin
+                {
+                    StartEventWatcher.Start();
+                    StopEventWatcher.Start();
+                }
+                else
+                {
+                    ElevateProcess();
+                }
             }
             catch (ManagementException) { }
         }
@@ -43,6 +51,10 @@ namespace BorderlessMinecraft.Processes
         /// Returns the process ID of the started process
         /// </summary>
         public event Action<int> OnJavaAppStopped;
+        /// <summary>
+        /// Tells the Form object to kill the current process
+        /// </summary>
+        public event Action OnProcessShouldExit;
 
         private void StartEventWatcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
@@ -60,6 +72,16 @@ namespace BorderlessMinecraft.Processes
             {
                 OnJavaAppStopped.Invoke(Convert.ToInt32(e.NewEvent.Properties["ProcessID"].Value)); //return the process id
             }
+        }
+
+        private void ElevateProcess()
+        {
+            var path = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var processInfo = new ProcessStartInfo(path);
+            processInfo.UseShellExecute = true;
+            processInfo.Verb = "runas";
+            Process.Start(processInfo);
+            OnProcessShouldExit.Invoke(); //exit the current process
         }
     }
 }

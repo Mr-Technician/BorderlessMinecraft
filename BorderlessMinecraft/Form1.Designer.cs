@@ -71,13 +71,13 @@ namespace BorderlessMinecraft
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTipContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.Exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenu = new System.Windows.Forms.MenuStrip();
             this.Settings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.ToolTipContextMenu.SuspendLayout();
             this.SettingsMenu.SuspendLayout();
@@ -298,14 +298,21 @@ namespace BorderlessMinecraft
             this.Exit,
             this.ContextMenuSettings});
             this.ToolTipContextMenu.Name = "ToolTipContextMenu";
-            this.ToolTipContextMenu.Size = new System.Drawing.Size(181, 70);
+            this.ToolTipContextMenu.Size = new System.Drawing.Size(117, 48);
             // 
             // Exit
             // 
             this.Exit.Name = "Exit";
-            this.Exit.Size = new System.Drawing.Size(180, 22);
+            this.Exit.Size = new System.Drawing.Size(116, 22);
             this.Exit.Text = "Exit";
             this.Exit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // ContextMenuSettings
+            // 
+            this.ContextMenuSettings.Name = "ContextMenuSettings";
+            this.ContextMenuSettings.Size = new System.Drawing.Size(116, 22);
+            this.ContextMenuSettings.Text = "Settings";
+            this.ContextMenuSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SettingsMenu
             // 
@@ -357,13 +364,7 @@ namespace BorderlessMinecraft
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(187, 22);
             this.toolStripMenuItem4.Text = "Automatic Borderless";
-            // 
-            // ContextMenuSettings
-            // 
-            this.ContextMenuSettings.Name = "ContextMenuSettings";
-            this.ContextMenuSettings.Size = new System.Drawing.Size(180, 22);
-            this.ContextMenuSettings.Text = "Settings";
-            this.ContextMenuSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolStripMenuItem4.ToolTipText = "Requires administrator privleges";
             // 
             // Form1
             // 

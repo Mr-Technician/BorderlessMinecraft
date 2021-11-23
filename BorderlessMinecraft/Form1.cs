@@ -96,6 +96,7 @@ namespace BorderlessMinecraft
                 ProcessMonitor.Start();
             ProcessMonitor.OnJavaAppStarted += ProcessMonitor_OnJavaAppStarted; //attach events
             ProcessMonitor.OnJavaAppStopped += ProcessMonitor_OnJavaAppStopped;
+            ProcessMonitor.OnProcessShouldExit += ProcessMonitor_OnProcessShouldExit;
 
             //set up event handlers
             Resize += Form1_Resize1;
@@ -116,6 +117,8 @@ namespace BorderlessMinecraft
                 TrayIcon.Visible = true;
             }
         }
+
+        private void ProcessMonitor_OnProcessShouldExit() => Application.Exit();
 
         private async void ProcessMonitor_OnJavaAppStarted(int pid)
         {
@@ -166,6 +169,8 @@ namespace BorderlessMinecraft
         {
             var state = ((ToolStripMenuItem)sender).Checked;
             Config.AutomaticBorderless = state;
+            if (state)
+                ProcessMonitor.Start();
             if (!state) //if the mode is disabled, stop the process monitor
                 ProcessMonitor.Stop();
         }

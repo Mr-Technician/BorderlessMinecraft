@@ -67,6 +67,8 @@ namespace BorderlessMinecraft
             return processes.Distinct().ToArray() as Process[]; //converts dynamic arraylist to static array
         }
 
+        [DllImport("shell32.dll")]
+        internal static extern bool IsUserAnAdmin(); //checks if the current user is an admin
         [DllImport("user32.dll")]
         private static extern int ShowWindow(IntPtr hWnd, uint Msg); //restores the window
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
