@@ -56,7 +56,7 @@ namespace BorderlessMinecraft
         public Form1()
         {
             InitializeComponent();
-            addProcesses();
+            AddProcesses();
 
             //create the ToolTip for advanced mode hover
             ToolTip toolTip1 = new ToolTip();
@@ -138,18 +138,17 @@ namespace BorderlessMinecraft
                     await Task.Delay(250); //if no, delay 250 ms
                 }
                 Program.GoBorderless(handle, 0, 0, Program.GetScreenRezx(), Program.GetScreenRezy()); //go borderless
-                ProcessMonitor.Stop(); //stop monitoring for processe starts
             }
+            AddProcessesThreadSafe();
         }
 
         private void ProcessMonitor_OnJavaAppStopped(int pid)
         {
-            addProcesses();
             if (AutoBorderlessPID.HasValue) //if the app that was made borderless automatically has
             {
                 AutoBorderlessPID = null; //reset the pid to null
-                ProcessMonitor.Start(); //start monitoring process starts
             }
+            AddProcessesThreadSafe();
         }
 
         private void TrayIcon_Click(object sender, MouseEventArgs e)
@@ -177,7 +176,7 @@ namespace BorderlessMinecraft
 
         private void Exit_Click(object sender, EventArgs e) => Close();
 
-        private void addProcesses() //method to add processes to list
+        private void AddProcesses() //method to add processes to list
         {
             listBox1.Items.Clear(); //clear the listbox on refresh
             button1.Enabled = false; //disable the button by default
@@ -197,6 +196,17 @@ namespace BorderlessMinecraft
             {
                 listBox1.Items.Add(proc.MainWindowTitle); //adds process title to list
             }
+        }
+
+        /// <summary>
+        /// Calls AddProcesses internally after syncing back to the UI thread
+        /// </summary>
+        private void AddProcessesThreadSafe()
+        {
+            Invoke(new MethodInvoker(delegate () //sync back to UI thread https://stackoverflow.com/a/6691629/14024210
+            {
+                AddProcesses();
+            }));
         }
 
         private void debugInstructionsLabel_Click(object sender, EventArgs e)
@@ -263,12 +273,15 @@ namespace BorderlessMinecraft
                 }
             }
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            int pid = minecraftProcesses[listBox1.SelectedIndex].Id; //get the minecraft process by id
             Program.GoBorderless(handle, xPos, yPos, xRes, yRes);
+            if (!AutoBorderlessPID.HasValue) //save this pid to effectively disable auto borderless. Otherwise a second instance of MC would also go borderless
+                AutoBorderlessPID = pid;
         }
 
         private void button2_Click(object sender, EventArgs e) //refresh button
         {
-            addProcesses();
+            AddProcesses();
         }
 
         private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -302,7 +315,7 @@ namespace BorderlessMinecraft
                 renamedProcesses.Add(PID);
             }
 
-            addProcesses(); //after rename, refresh the list
+            AddProcesses(); //after rename, refresh the list
             textBox5.Text = ""; //reset text
         }
 
@@ -360,12 +373,13 @@ namespace BorderlessMinecraft
             }
 
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            int pid = minecraftProcesses[listBox1.SelectedIndex].Id; //get the pid
             Program.RestoreWindow(handle);
             Program.UndoBorderless(handle);
             Program.SetPos(handle, xPos, yPos, xRes, yRes);
             Program.SetForeground(handle);
-            //debugInstructionsLabel.Text = Program.getCurrentStyle(handle).ToString();
-
+            if (AutoBorderlessPID == pid) //if the pid of the restored window matches our saved pid, set the saved pid to null
+                AutoBorderlessPID = null;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -405,7 +419,7 @@ namespace BorderlessMinecraft
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-            addProcesses(); //refresh the process list when changing the filter option
+            AddProcesses(); //refresh the process list when changing the filter option
         }
 
         private void Form1_Resize1(object sender, EventArgs e)
