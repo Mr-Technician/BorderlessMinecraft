@@ -64,7 +64,7 @@ namespace BorderlessMinecraft
                 }
                 catch (ArgumentException) { }
             }
-            return processes.Distinct().ToArray() as Process[]; //converts dynamic arraylist to static array
+            return processes.Distinct().ToArray(); //converts dynamic arraylist to static array
         }
 
         [DllImport("shell32.dll")]
@@ -81,6 +81,8 @@ namespace BorderlessMinecraft
         private static extern bool SetForegroundWindow(IntPtr hWnd); //sets the window to the foreground
         [DllImport("user32.dll")]
         private static extern bool SetWindowText(IntPtr hWnd, string title); //changes the window title
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle); //get the window's size
 
         private static readonly uint SW_RESTORE = 0x09; //const for restoreWindow
         private static readonly uint SW_MINIMIZE = 0x06;
@@ -102,10 +104,12 @@ namespace BorderlessMinecraft
         /// <returns></returns>
         public static void GoBorderless(IntPtr handle, int xPos, int yPos, int xRes, int yRes)
         {
+            if (WindowIsFullScreen(handle))
+                return; // if the current window is fullsreen, return
             RestoreWindow(handle);
             SetBorderless(handle);
             SetPos(handle, xPos, yPos, xRes, yRes);
-            
+
             SetForeground(handle);
         }
 
@@ -174,11 +178,28 @@ namespace BorderlessMinecraft
             return Screen.PrimaryScreen.WorkingArea.Height; //gets the size of the taskbar
         }
 
+        private static bool WindowIsFullScreen(IntPtr handle) //returns true if a window is full screen
+        {
+            Rect rect = default;
+            GetWindowRect(handle, ref rect);
+            return rect.Left == -32000 && rect.Top == -32000; //by default, full screen windows have left and top values of -32000
+        }
+
         //debug methods
 
         public static int getCurrentStyle(IntPtr handle)
         {
             return GetWindowLongPtr(handle, GWL_STYLE); //gets the current style
         }
+    }
+    /// <summary>
+    /// A window rectangle
+    /// </summary>
+    internal struct Rect
+    {
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Right { get; set; }
+        public int Bottom { get; set; }
     }
 }
