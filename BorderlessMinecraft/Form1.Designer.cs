@@ -66,8 +66,6 @@ namespace BorderlessMinecraft
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.button4 = new System.Windows.Forms.Button();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTipContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.Exit = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +76,8 @@ namespace BorderlessMinecraft
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.ToolTipContextMenu.SuspendLayout();
             this.SettingsMenu.SuspendLayout();
@@ -265,27 +265,6 @@ namespace BorderlessMinecraft
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(380, 245);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(110, 17);
-            this.checkBox2.TabIndex = 21;
-            this.checkBox2.Text = "Preserve Taskbar";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(380, 259);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(99, 17);
-            this.checkBox3.TabIndex = 22;
-            this.checkBox3.Text = "Show all clients";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
-            // 
             // TrayIcon
             // 
             this.TrayIcon.ContextMenuStrip = this.ToolTipContextMenu;
@@ -332,7 +311,9 @@ namespace BorderlessMinecraft
             this.toolStripMenuItem1,
             this.toolStripMenuItem2,
             this.toolStripMenuItem3,
-            this.toolStripMenuItem4});
+            this.toolStripMenuItem4,
+            this.toolStripMenuItem5,
+            this.toolStripMenuItem6});
             this.Settings.Name = "Settings";
             this.Settings.Size = new System.Drawing.Size(61, 20);
             this.Settings.Text = "Settings";
@@ -366,14 +347,28 @@ namespace BorderlessMinecraft
             this.toolStripMenuItem4.Text = "Automatic Borderless";
             this.toolStripMenuItem4.ToolTipText = "Requires administrator privleges";
             // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.CheckOnClick = true;
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(187, 22);
+            this.toolStripMenuItem5.Text = "Preserve Taskbar";
+            this.toolStripMenuItem5.ToolTipText = "The taskbar will be visible below Minecraft";
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.CheckOnClick = true;
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(187, 22);
+            this.toolStripMenuItem6.Text = "Show All Clients";
+            this.toolStripMenuItem6.ToolTipText = "Shows non-vanilla MC clients, but may show other Java applications as well";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 322);
             this.Controls.Add(this.SettingsMenu);
-            this.Controls.Add(this.checkBox3);
-            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.textBox5);
@@ -428,8 +423,6 @@ namespace BorderlessMinecraft
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.NotifyIcon TrayIcon;
         private System.Windows.Forms.ContextMenuStrip ToolTipContextMenu;
         private System.Windows.Forms.ToolStripMenuItem Exit;
@@ -440,6 +433,8 @@ namespace BorderlessMinecraft
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSettings;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
     }
 }
 

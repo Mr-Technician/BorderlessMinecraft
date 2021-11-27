@@ -68,35 +68,19 @@ namespace BorderlessMinecraft
 
             toolTip1.SetToolTip(this.checkBox1, "Enables the use of custom positioning and sizing.");
 
-            ToolTip toolTip2 = new ToolTip();
-
-            toolTip2.AutoPopDelay = 5000;
-            toolTip2.InitialDelay = 1;
-            toolTip2.ReshowDelay = 500;
-            toolTip2.ShowAlways = true;
-
-            toolTip2.SetToolTip(this.checkBox2, "Shows the taskbar when in borderless mode. Ignored if custom height is set.");
-
-            ToolTip toolTip3 = new ToolTip();
-
-            toolTip3.AutoPopDelay = 5000;
-            toolTip3.InitialDelay = 1;
-            toolTip3.ReshowDelay = 500;
-            toolTip3.ShowAlways = true;
-
-            toolTip3.SetToolTip(this.checkBox3, "Shows all Minecraft Java clients. This option will also show other Java apps that are currently running.");
-
             toolStripMenuItem1.Checked = Config.StartOnBoot;
             toolStripMenuItem2.Checked = Config.StartMinimized;
             toolStripMenuItem3.Checked = Config.MinimizeToTray;
             toolStripMenuItem4.Checked = Config.AutomaticBorderless;
+            toolStripMenuItem5.Checked = Config.PreserveTaskBar;
+            toolStripMenuItem6.Checked = Config.ShowAllClients;
 
             ProcessMonitor = new ProcessMonitor(); //create the process monitor
-            if (Config.AutomaticBorderless) //start listening if auto borderless is enabled
-                ProcessMonitor.Start();
             ProcessMonitor.OnJavaAppStarted += ProcessMonitor_OnJavaAppStarted; //attach events
             ProcessMonitor.OnJavaAppStopped += ProcessMonitor_OnJavaAppStopped;
             ProcessMonitor.OnProcessShouldExit += ProcessMonitor_OnProcessShouldExit;
+            if (Config.AutomaticBorderless) //start listening if auto borderless is enabled
+                ProcessMonitor.Start(); //this call must occur after attaching the OnProcessShouldExit event
 
             //set up event handlers
             Resize += Form1_Resize1;
@@ -108,6 +92,8 @@ namespace BorderlessMinecraft
             toolStripMenuItem2.CheckedChanged += StartMinimizedItem_CheckedChanged;
             toolStripMenuItem3.CheckedChanged += MinimizeToTrayItem_CheckedChanged;
             toolStripMenuItem4.CheckedChanged += AutoBorderlessItem_CheckedChanged;
+            toolStripMenuItem5.CheckedChanged += PreserveTaskBarItem_CheckedChanged;
+            toolStripMenuItem6.CheckedChanged += ShowAllClientsItem_CheckedChanged;
 
             if (Config.StartMinimized && IsAutoStarted()) //ensure the app has autostarted and minimize to tray is enabled. This ensures normal starts will not be minimized
             {
@@ -118,7 +104,7 @@ namespace BorderlessMinecraft
             }
         }
 
-        private void ProcessMonitor_OnProcessShouldExit() => Application.Exit();
+        private void ProcessMonitor_OnProcessShouldExit() => Environment.Exit(0);
 
         private async void ProcessMonitor_OnJavaAppStarted(int pid)
         {
@@ -173,6 +159,8 @@ namespace BorderlessMinecraft
             if (!state) //if the mode is disabled, stop the process monitor
                 ProcessMonitor.Stop();
         }
+        private void PreserveTaskBarItem_CheckedChanged(object sender, EventArgs e) => Config.PreserveTaskBar = ((ToolStripMenuItem)sender).Checked;
+        private void ShowAllClientsItem_CheckedChanged(object sender, EventArgs e) => Config.ShowAllClients = ((ToolStripMenuItem)sender).Checked;
 
         private void Exit_Click(object sender, EventArgs e) => Close();
 
@@ -183,7 +171,7 @@ namespace BorderlessMinecraft
             button3.Enabled = false; //disable the button by default
             button4.Enabled = false; //disable the button by default
 
-            if (checkBox3.Checked) //if the checkbox is checked, no title filtering will occur
+            if (Config.ShowAllClients) //if the checkbox is checked, no title filtering will occur
             {
                 minecraftProcesses = Program.getProcesses(renamedProcesses);
             }
@@ -222,56 +210,20 @@ namespace BorderlessMinecraft
             int xRes = Program.GetScreenRezx();
             int yRes = Program.GetScreenRezy();
 
-            if (checkBox2.Checked)
+            if (Config.PreserveTaskBar)
             {
                 yRes = Program.GetWorkingAreaHeight(); //ignored if advanced mode is enabled
             }
 
             //advanced mode checks
-            if (textBox1.Text != "")
-            {
-                try
-                {
-                    xPos = Convert.ToInt32(textBox1.Text); //if there is content in the textbox, an attempt is made to assign it to variable
-                }
-                catch
-                {
-                    xPos = 0;
-                }
-            }
-            if (textBox2.Text != "")
-            {
-                try
-                {
-                    yPos = Convert.ToInt32(textBox2.Text); //if there is content in the textbox, an attempt is made to assign it to variable
-                }
-                catch
-                {
-                    yPos = 0;
-                }
-            }
-            if (textBox3.Text != "")
-            {
-                try
-                {
-                    xRes = Convert.ToInt32(textBox3.Text); //if there is content in the textbox, an attempt is made to assign it to variable
-                }
-                catch
-                {
-                    xRes = Program.GetScreenRezx();
-                }
-            }
-            if (textBox4.Text != "")
-            {
-                try
-                {
-                    yRes = Convert.ToInt32(textBox4.Text); //if there is content in the textbox, an attempt is made to assign it to variable
-                }
-                catch
-                {
-                    yRes = Program.GetScreenRezy();
-                }
-            }
+            if (textBox1.Text != "" && int.TryParse(textBox1.Text, out int parsed))
+                xPos = parsed;
+            if (textBox2.Text != "" && int.TryParse(textBox2.Text, out int parsed2))
+                yPos = parsed2;
+            if (textBox3.Text != "" && int.TryParse(textBox3.Text, out int parsed3))
+                xRes = parsed3;
+            if (textBox4.Text != "" && int.TryParse(textBox4.Text, out int parsed4))
+                yRes = parsed4;
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             int pid = minecraftProcesses[listBox1.SelectedIndex].Id; //get the minecraft process by id
             Program.GoBorderless(handle, xPos, yPos, xRes, yRes);

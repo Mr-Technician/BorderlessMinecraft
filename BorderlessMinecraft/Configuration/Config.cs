@@ -24,6 +24,10 @@ namespace BorderlessMinecraft.Configuration
                 _minimizeToTray = value3;
             if (bool.TryParse((string)Registry.GetKeyValue(nameof(AutomaticBorderless)), out bool value4))
                 _automaticBorderless = value4;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(PreserveTaskBar)), out bool value5))
+                _preserveTaskBar = value5;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(ShowAllClients)), out bool value6))
+                _showAllClients = value6;
         }
 
         public bool StartOnBoot
@@ -66,5 +70,23 @@ namespace BorderlessMinecraft.Configuration
             }
         }
         private bool _automaticBorderless;
+        public bool PreserveTaskBar
+        {
+            get => _preserveTaskBar; set
+            {
+                _preserveTaskBar = value;
+                Registry.SetKeyValue(nameof(PreserveTaskBar), value);
+            }
+        }
+        private bool _preserveTaskBar;
+        public bool ShowAllClients
+        {
+            get => _showAllClients; set
+            {
+                _showAllClients = value;
+                Registry.SetKeyValue(nameof(ShowAllClients), value);
+            }
+        }
+        private bool _showAllClients;
     }
 }
