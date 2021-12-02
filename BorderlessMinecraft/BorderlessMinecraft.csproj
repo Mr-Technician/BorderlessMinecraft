@@ -84,6 +84,7 @@
     <Compile Include="Configuration\AutoStartup.cs" />
     <Compile Include="Configuration\RegistryEditor.cs" />
     <Compile Include="Configuration\Config.cs" />
+    <Compile Include="DLLInterop.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

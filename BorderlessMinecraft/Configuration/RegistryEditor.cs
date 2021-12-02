@@ -10,12 +10,12 @@ namespace BorderlessMinecraft.Configuration
     class RegistryEditor
     {
         private string SubKeyName { get; }
-        public RegistryEditor(string subkeyName = @"SOFTWARE\TestSettings")
+        internal RegistryEditor(string subkeyName = @"SOFTWARE\TestSettings")
         {
             SubKeyName = subkeyName;
         }
 
-        public object GetKeyValue(string key)
+        internal object GetKeyValue(string key)
         {
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey(SubKeyName);
 
@@ -29,7 +29,7 @@ namespace BorderlessMinecraft.Configuration
             return null;
         }
 
-        public void SetKeyValue(string key, object value)
+        internal void SetKeyValue(string key, object value)
         {
             RegistryKey regKey = Registry.CurrentUser.CreateSubKey(SubKeyName);
             regKey.SetValue(key, value);

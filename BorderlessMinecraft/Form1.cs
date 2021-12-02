@@ -29,13 +29,14 @@ using System.Collections;
 using BorderlessMinecraft.Configuration;
 using System.Management;
 using BorderlessMinecraft.Processes;
+using static BorderlessMinecraft.DLLInterop; //includ the static DLL Interop class
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
 namespace BorderlessMinecraft
 {
-    public partial class Form1 : Form
+    internal partial class Form1 : Form
     {
         int? AutoBorderlessPID; //the process id of an automatically set borderless window
         Process[] minecraftProcesses; //initializes an array of processess
@@ -53,7 +54,7 @@ namespace BorderlessMinecraft
         //    }
         //}
 
-        public Form1()
+        internal Form1()
         {
             InitializeComponent();
             AddProcesses();
@@ -123,7 +124,7 @@ namespace BorderlessMinecraft
                     }
                     await Task.Delay(250); //if no, delay 250 ms
                 }
-                Program.GoBorderless(handle, 0, 0, Program.GetScreenRezx(), Program.GetScreenRezy()); //go borderless
+                GoBorderless(handle, 0, 0, GetScreenRezx(), GetScreenRezy()); //go borderless
             }
             AddProcessesThreadSafe();
         }
@@ -173,11 +174,11 @@ namespace BorderlessMinecraft
 
             if (Config.ShowAllClients) //if the checkbox is checked, no title filtering will occur
             {
-                minecraftProcesses = Program.getProcesses(renamedProcesses);
+                minecraftProcesses = GetProcesses(renamedProcesses);
             }
             else //if not, filter titles by the word "minecraft"
             {
-                minecraftProcesses = Program.getProcesses(renamedProcesses, "Minecraft");
+                minecraftProcesses = GetProcesses(renamedProcesses, "Minecraft");
             }
 
             foreach (Process proc in minecraftProcesses)
@@ -207,12 +208,12 @@ namespace BorderlessMinecraft
             //default values, changed by advanced mode
             int xPos = 0;
             int yPos = 0;
-            int xRes = Program.GetScreenRezx();
-            int yRes = Program.GetScreenRezy();
+            int xRes = GetScreenRezx();
+            int yRes = GetScreenRezy();
 
             if (Config.PreserveTaskBar)
             {
-                yRes = Program.GetWorkingAreaHeight(); //ignored if advanced mode is enabled
+                yRes = GetWorkingAreaHeight(); //ignored if advanced mode is enabled
             }
 
             //advanced mode checks
@@ -226,7 +227,7 @@ namespace BorderlessMinecraft
                 yRes = parsed4;
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             int pid = minecraftProcesses[listBox1.SelectedIndex].Id; //get the minecraft process by id
-            Program.GoBorderless(handle, xPos, yPos, xRes, yRes);
+            GoBorderless(handle, xPos, yPos, xRes, yRes);
             if (!AutoBorderlessPID.HasValue) //save this pid to effectively disable auto borderless. Otherwise a second instance of MC would also go borderless
                 AutoBorderlessPID = pid;
         }
@@ -261,7 +262,7 @@ namespace BorderlessMinecraft
             {
                 title = currentTitle + " (Second Account)";
             }
-            Program.SetTitle(handle, title);
+            SetTitle(handle, title);
             if (!renamedProcesses.Contains(PID)) //if the renamed handle is not currently stored, add it. This allows borderless minecraft to detect windows that have been renamed
             {
                 renamedProcesses.Add(PID);
@@ -274,10 +275,10 @@ namespace BorderlessMinecraft
         private void button4_Click(object sender, EventArgs e) //restore window button
         {
             //default values, changed by advanced mode
-            int xPos = Program.GetCenterx();
-            int yPos = Program.GetCentery();
-            int xRes = Program.xDefaultRes;
-            int yRes = Program.yDefaultRes;
+            int xPos = GetCenterx();
+            int yPos = GetCentery();
+            int xRes = xDefaultRes;
+            int yRes = yDefaultRes;
 
             if (textBox1.Text != "")
             {
@@ -287,7 +288,7 @@ namespace BorderlessMinecraft
                 }
                 catch
                 {
-                    xPos = Program.GetCenterx();
+                    xPos = GetCenterx();
                 }
             }
             if (textBox2.Text != "")
@@ -298,7 +299,7 @@ namespace BorderlessMinecraft
                 }
                 catch
                 {
-                    yPos = Program.GetCentery();
+                    yPos = GetCentery();
                 }
             }
             if (textBox3.Text != "")
@@ -309,7 +310,7 @@ namespace BorderlessMinecraft
                 }
                 catch
                 {
-                    xRes = Program.xDefaultRes;
+                    xRes = xDefaultRes;
                 }
             }
             if (textBox4.Text != "")
@@ -320,16 +321,16 @@ namespace BorderlessMinecraft
                 }
                 catch
                 {
-                    yRes = Program.yDefaultRes;
+                    yRes = yDefaultRes;
                 }
             }
 
             IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             int pid = minecraftProcesses[listBox1.SelectedIndex].Id; //get the pid
-            Program.RestoreWindow(handle);
-            Program.UndoBorderless(handle);
-            Program.SetPos(handle, xPos, yPos, xRes, yRes);
-            Program.SetForeground(handle);
+            RestoreWindow(handle);
+            UndoBorderless(handle);
+            SetPos(handle, xPos, yPos, xRes, yRes);
+            SetForeground(handle);
             if (AutoBorderlessPID == pid) //if the pid of the restored window matches our saved pid, set the saved pid to null
                 AutoBorderlessPID = null;
         }
@@ -398,6 +399,27 @@ namespace BorderlessMinecraft
         {
             string[] args = Environment.GetCommandLineArgs();
             return args.Contains("-autoStart");
+        }
+
+        private static Process[] GetProcesses(List<int> processIDs, string startsWith = "")
+        {
+            Process[] allProcesses = Process.GetProcesses(); //gets an array of all system processes
+            List<Process> processes = new List<Process>();
+            foreach (Process proc in allProcesses)
+            {
+                if (proc.MainWindowTitle.StartsWith(startsWith) && proc.ProcessName.Contains("java") && !string.IsNullOrWhiteSpace(proc.MainWindowTitle) && !processIDs.Contains(proc.Id)) //checks the java process and non empty titles OR its handle matches
+                    processes.Add(proc);
+            }
+
+            foreach (int PID in processIDs)
+            {
+                try
+                {
+                    processes.Add(Process.GetProcessById(PID)); //adds each process by ID
+                }
+                catch (ArgumentException) { }
+            }
+            return processes.Distinct().ToArray(); //converts dynamic arraylist to static array
         }
     }
 }

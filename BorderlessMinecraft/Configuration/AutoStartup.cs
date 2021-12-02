@@ -13,7 +13,7 @@ namespace BorderlessMinecraft.Configuration
         /// Sets the auto startup location for borderless minecraft
         /// </summary>
         /// <param name="enabled"></param>
-        public static void SetStartup(bool enabled)
+        internal static void SetStartup(bool enabled)
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 

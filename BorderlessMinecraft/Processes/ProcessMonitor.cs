@@ -12,7 +12,7 @@ namespace BorderlessMinecraft.Processes
     {
         ManagementEventWatcher StartEventWatcher { get; }
         ManagementEventWatcher StopEventWatcher { get; }
-        public ProcessMonitor()
+        internal ProcessMonitor()
         {
             StartEventWatcher = new ManagementEventWatcher(new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace"));
             StartEventWatcher.EventArrived += StartEventWatcher_EventArrived;
@@ -20,11 +20,11 @@ namespace BorderlessMinecraft.Processes
             StopEventWatcher.EventArrived += StopEventWatcher_EventArrived;
         }
 
-        public void Start()
+        internal void Start()
         {
             try
             {
-                if (Program.IsUserAnAdmin()) //check if the current user is an admin
+                if (DLLInterop.IsUserAnAdmin()) //check if the current user is an admin
                 {
                     StartEventWatcher.Start();
                     StopEventWatcher.Start();
@@ -37,7 +37,7 @@ namespace BorderlessMinecraft.Processes
             catch (ManagementException) { }
         }
 
-        public void Stop()
+        internal void Stop()
         {
             StartEventWatcher.Stop();
             StopEventWatcher.Stop();
@@ -46,15 +46,15 @@ namespace BorderlessMinecraft.Processes
         /// <summary>
         /// Returns the process ID of the started process
         /// </summary>
-        public event Action<int> OnJavaAppStarted;
+        internal event Action<int> OnJavaAppStarted;
         /// <summary>
         /// Returns the process ID of the started process
         /// </summary>
-        public event Action<int> OnJavaAppStopped;
+        internal event Action<int> OnJavaAppStopped;
         /// <summary>
         /// Tells the Form object to kill the current process
         /// </summary>
-        public event Action OnProcessShouldExit;
+        internal event Action OnProcessShouldExit;
 
         private void StartEventWatcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
