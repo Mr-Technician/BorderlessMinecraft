@@ -295,6 +295,7 @@ namespace BorderlessMinecraft
             // 
             // SettingsMenu
             // 
+            this.SettingsMenu.BackColor = System.Drawing.Color.White;
             this.SettingsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Settings});
             this.SettingsMenu.Location = new System.Drawing.Point(0, 0);
