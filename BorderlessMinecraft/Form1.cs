@@ -114,9 +114,10 @@ namespace BorderlessMinecraft
                 AutoBorderlessPID = pid; //store the pid
                 IntPtr handle = default;
                 bool HandleFound = false;
+                Process process = null;
                 while (!HandleFound)
                 {
-                    var process = Process.GetProcessById(AutoBorderlessPID.Value); //get the process by ID
+                    process = Process.GetProcessById(AutoBorderlessPID.Value); //get the process by ID
                     if (process.MainWindowHandle != default) //check if the handle exists
                     {
                         HandleFound = true;
@@ -124,7 +125,9 @@ namespace BorderlessMinecraft
                     }
                     await Task.Delay(250); //if no, delay 250 ms
                 }
-                GoBorderless(handle, 0, 0, GetScreenRezx(), GetScreenRezy()); //go borderless
+
+                if (process.MainWindowTitle.Contains("Minecraft")) //for now just check the title with a magic string. In the future this will allow better control. Also note that we have already filtered out any non-java process
+                    GoBorderless(handle, 0, 0, GetScreenRezx(), GetScreenRezy()); //go borderless
             }
             AddProcessesThreadSafe();
         }
