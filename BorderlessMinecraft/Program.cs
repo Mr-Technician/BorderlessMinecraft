@@ -36,10 +36,7 @@ namespace BorderlessMinecraft
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1()
-            {
-                Text = "Borderless Minecraft 1.3.0"
-            });
+            Application.Run(new Form1());
         }
     }
 }

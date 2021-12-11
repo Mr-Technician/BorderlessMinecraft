@@ -394,7 +394,7 @@ namespace BorderlessMinecraft
             this.MainMenuStrip = this.SettingsMenu;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "Borderless Minecraft 1.2.1";
+            this.Text = "Borderless Minecraft 1.3.0";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ToolTipContextMenu.ResumeLayout(false);
             this.SettingsMenu.ResumeLayout(false);
