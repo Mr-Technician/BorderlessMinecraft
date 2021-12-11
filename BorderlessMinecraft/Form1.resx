@@ -452,6 +452,32 @@
         SUVORK5CYII=
 </value>
   </data>
+  <metadata name="TrayIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="ToolTipContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>115, 17</value>
+  </metadata>
+  <data name="TrayIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAALEAAADCAAAAzwAAAOMAHRfPADk31wBUUdMAbWvOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIgAAAAAAAAAAAAAiIiIiIiIAAAA
+        AAAAAAAAAIiIiIiIRDMzMzMzMzMzMzMAiIiIiEQzMzMzMzMzMzMzAIiIiHczMyKIiIiIiIhmMzMAiIh3
+        MzMiiIiIiIiIZjMzAIiIdzNVMyKIiIiIiIhmMwCIiHczVTMiiIiIiIiIZjMAiIh3M4hVMyKIiIiIiIgz
+        AIiIdzOIVTMiiIiIiIiIMwCIiHcziIhVMyKIiIiIiDMAiIh3M4iIVTMiiIiIiIgzAIiIdzOIiIhVMyKI
+        iIiIMwCIiHcziIiIVTMiiIiIiDMAiIh3M4iIiIhVMyKIiIgzAIiIdzOIiIiIVTMiiIiIMwCIiHcziIiI
+        iIhVMyKIiDMAiIh3M4iIiIiIVTMiiIgzAIiIdzOIiIiIiIhVMyKIMwCIiHcziIiIiIiIVTMiiDMAiIh3
+        MxGIiIiIiIhVMyIzAIiIdzMRiIiIiIiIVTMiMwCIiHczMxGIiIiIiIhVMzMAiIh3MzMRiIiIiIiIVTMz
+        AIiIiHczMzMzMzMzMzMzRIiIiIh3MzMzMzMzMzMzM0SIiIiIiHd3d3d3d3d3d3eIiIiIiIh3d3d3d3d3
+        d3d3iIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIj///////////wAAD/8AAA/8AAAD/AA
+        AA/AP/wDwD/8A8AP/wPAD/8DwwP/w8MD/8PDwP/Dw8D/w8PwP8PD8D/Dw/wPw8P8D8PD/wPDw/8Dw8P/
+        wMPD/8DDwP/wA8D/8APAP/wDwD/8A/AAAA/wAAAP/AAAP/wAAD///////////w==
+</value>
+  </data>
+  <metadata name="SettingsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>281, 17</value>
+  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
