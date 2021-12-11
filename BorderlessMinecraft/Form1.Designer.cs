@@ -149,9 +149,9 @@ namespace BorderlessMinecraft
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(19, 278);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(105, 17);
+            this.checkBox1.Size = new System.Drawing.Size(75, 17);
             this.checkBox1.TabIndex = 8;
-            this.checkBox1.Text = "Advanced Mode";
+            this.checkBox1.Text = "Advanced";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
