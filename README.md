@@ -1,6 +1,8 @@
 # Borderless Minecraft
 This application allows Minecraft to run as a borderless window. The default fullscreen mode does not allow other windows to be placed above it and does not allow users to mouse away from Minecraft without it minimizing.
 
+## Join the Discord: https://discord.gg/gbR7qba6uv
+
 Basic usage is simple. If minecraft is already running, it will appear in the list of Minecraft sessions. Selecting one and clicking "Go Borderless" will remove all window decoration and set its size to match that of your computer's main monitor.
 
 Clicking "Restore Window" will return it to a normal size and show the menu bar.
