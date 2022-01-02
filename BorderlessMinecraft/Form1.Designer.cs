@@ -17,7 +17,7 @@
 
 namespace BorderlessMinecraft
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -46,39 +46,39 @@ namespace BorderlessMinecraft
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.debugInstructionsLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.button4 = new System.Windows.Forms.Button();
+            this.goBorderlessButton = new System.Windows.Forms.Button();
+            this.processesListBox = new System.Windows.Forms.ListBox();
+            this.refreshButton = new System.Windows.Forms.Button();
+            this.setTitleButton = new System.Windows.Forms.Button();
+            this.mainTitlePictureBox = new System.Windows.Forms.PictureBox();
+            this.advancedCheckBox = new System.Windows.Forms.CheckBox();
+            this.xPosTextBox = new System.Windows.Forms.TextBox();
+            this.xPosLabel = new System.Windows.Forms.Label();
+            this.yPosLabel = new System.Windows.Forms.Label();
+            this.widthLabel = new System.Windows.Forms.Label();
+            this.heightLabel = new System.Windows.Forms.Label();
+            this.yPosTextBox = new System.Windows.Forms.TextBox();
+            this.widthTextBox = new System.Windows.Forms.TextBox();
+            this.heightTextBox = new System.Windows.Forms.TextBox();
+            this.newTitleLabel = new System.Windows.Forms.Label();
+            this.newTitleTextBox = new System.Windows.Forms.TextBox();
+            this.helpLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.restoreWindowButton = new System.Windows.Forms.Button();
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTipContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenu = new System.Windows.Forms.MenuStrip();
             this.Settings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.startOnBootMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startMinimizedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimizeToTrayMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.automaticBorderlessMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preserveTaskbarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showAllClientsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)(this.mainTitlePictureBox)).BeginInit();
             this.ToolTipContextMenu.SuspendLayout();
             this.SettingsMenu.SuspendLayout();
             this.SuspendLayout();
@@ -93,177 +93,176 @@ namespace BorderlessMinecraft
             this.debugInstructionsLabel.TabIndex = 1;
             this.debugInstructionsLabel.Text = "Select the session of Minecraft you want to make borderless and click \'Go Borderl" +
     "ess\'";
-            this.debugInstructionsLabel.Click += new System.EventHandler(this.debugInstructionsLabel_Click);
             // 
-            // button1
+            // goBorderlessButton
             // 
-            this.button1.Location = new System.Drawing.Point(378, 209);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 28);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Go Borderless!";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.goBorderlessButton.Location = new System.Drawing.Point(378, 209);
+            this.goBorderlessButton.Margin = new System.Windows.Forms.Padding(2);
+            this.goBorderlessButton.Name = "goBorderlessButton";
+            this.goBorderlessButton.Size = new System.Drawing.Size(97, 28);
+            this.goBorderlessButton.TabIndex = 2;
+            this.goBorderlessButton.Text = "Go Borderless!";
+            this.goBorderlessButton.UseVisualStyleBackColor = true;
+            this.goBorderlessButton.Click += new System.EventHandler(this.goBorderlessButton_Click);
             // 
-            // listBox1
+            // processesListBox
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(69, 117);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(304, 121);
-            this.listBox1.TabIndex = 4;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged_1);
+            this.processesListBox.FormattingEnabled = true;
+            this.processesListBox.Location = new System.Drawing.Point(69, 117);
+            this.processesListBox.Name = "processesListBox";
+            this.processesListBox.Size = new System.Drawing.Size(304, 121);
+            this.processesListBox.TabIndex = 4;
+            this.processesListBox.SelectedIndexChanged += new System.EventHandler(this.processesListBox_SelectedIndexChanged);
             // 
-            // button2
+            // refreshButton
             // 
-            this.button2.Location = new System.Drawing.Point(378, 117);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 28);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Refresh List";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.refreshButton.Location = new System.Drawing.Point(378, 117);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(97, 28);
+            this.refreshButton.TabIndex = 5;
+            this.refreshButton.Text = "Refresh List";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
-            // button3
+            // setTitleButton
             // 
-            this.button3.Location = new System.Drawing.Point(378, 147);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(97, 29);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Set Title";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.setTitleButton.Location = new System.Drawing.Point(378, 147);
+            this.setTitleButton.Name = "setTitleButton";
+            this.setTitleButton.Size = new System.Drawing.Size(97, 29);
+            this.setTitleButton.TabIndex = 6;
+            this.setTitleButton.Text = "Set Title";
+            this.setTitleButton.UseVisualStyleBackColor = true;
+            this.setTitleButton.Click += new System.EventHandler(this.setTitleButton_Click);
             // 
-            // pictureBox1
+            // mainTitlePictureBox
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(23, 27);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(496, 50);
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
+            this.mainTitlePictureBox.Image = ((System.Drawing.Image)(resources.GetObject("mainTitlePictureBox.Image")));
+            this.mainTitlePictureBox.Location = new System.Drawing.Point(23, 27);
+            this.mainTitlePictureBox.Name = "mainTitlePictureBox";
+            this.mainTitlePictureBox.Size = new System.Drawing.Size(496, 50);
+            this.mainTitlePictureBox.TabIndex = 7;
+            this.mainTitlePictureBox.TabStop = false;
             // 
-            // checkBox1
+            // advancedCheckBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(19, 278);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(75, 17);
-            this.checkBox1.TabIndex = 8;
-            this.checkBox1.Text = "Advanced";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.advancedCheckBox.AutoSize = true;
+            this.advancedCheckBox.Location = new System.Drawing.Point(19, 278);
+            this.advancedCheckBox.Name = "advancedCheckBox";
+            this.advancedCheckBox.Size = new System.Drawing.Size(75, 17);
+            this.advancedCheckBox.TabIndex = 8;
+            this.advancedCheckBox.Text = "Advanced";
+            this.advancedCheckBox.UseVisualStyleBackColor = true;
+            this.advancedCheckBox.CheckedChanged += new System.EventHandler(this.advancedCheckBox_CheckedChanged);
             // 
-            // textBox1
+            // xPosTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(130, 295);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(70, 20);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.Visible = false;
+            this.xPosTextBox.Location = new System.Drawing.Point(130, 295);
+            this.xPosTextBox.Name = "xPosTextBox";
+            this.xPosTextBox.Size = new System.Drawing.Size(70, 20);
+            this.xPosTextBox.TabIndex = 9;
+            this.xPosTextBox.Visible = false;
             // 
-            // label1
+            // xPosLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(130, 279);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "X Position";
-            this.label1.Visible = false;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.xPosLabel.AutoSize = true;
+            this.xPosLabel.Location = new System.Drawing.Point(130, 279);
+            this.xPosLabel.Name = "xPosLabel";
+            this.xPosLabel.Size = new System.Drawing.Size(54, 13);
+            this.xPosLabel.TabIndex = 10;
+            this.xPosLabel.Text = "X Position";
+            this.xPosLabel.Visible = false;
+            this.xPosLabel.Click += new System.EventHandler(this.xPosLabel_Click);
             // 
-            // label2
+            // yPosLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(203, 279);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 13);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Y Position";
-            this.label2.Visible = false;
+            this.yPosLabel.AutoSize = true;
+            this.yPosLabel.Location = new System.Drawing.Point(203, 279);
+            this.yPosLabel.Name = "yPosLabel";
+            this.yPosLabel.Size = new System.Drawing.Size(54, 13);
+            this.yPosLabel.TabIndex = 11;
+            this.yPosLabel.Text = "Y Position";
+            this.yPosLabel.Visible = false;
             // 
-            // label3
+            // widthLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(279, 279);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(37, 13);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "X Size";
-            this.label3.Visible = false;
+            this.widthLabel.AutoSize = true;
+            this.widthLabel.Location = new System.Drawing.Point(279, 279);
+            this.widthLabel.Name = "widthLabel";
+            this.widthLabel.Size = new System.Drawing.Size(37, 13);
+            this.widthLabel.TabIndex = 12;
+            this.widthLabel.Text = "X Size";
+            this.widthLabel.Visible = false;
             // 
-            // label4
+            // heightLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(355, 279);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 13);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "Y Size";
-            this.label4.Visible = false;
+            this.heightLabel.AutoSize = true;
+            this.heightLabel.Location = new System.Drawing.Point(355, 279);
+            this.heightLabel.Name = "heightLabel";
+            this.heightLabel.Size = new System.Drawing.Size(37, 13);
+            this.heightLabel.TabIndex = 13;
+            this.heightLabel.Text = "Y Size";
+            this.heightLabel.Visible = false;
             // 
-            // textBox2
+            // yPosTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(206, 295);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(70, 20);
-            this.textBox2.TabIndex = 14;
-            this.textBox2.Visible = false;
+            this.yPosTextBox.Location = new System.Drawing.Point(206, 295);
+            this.yPosTextBox.Name = "yPosTextBox";
+            this.yPosTextBox.Size = new System.Drawing.Size(70, 20);
+            this.yPosTextBox.TabIndex = 14;
+            this.yPosTextBox.Visible = false;
             // 
-            // textBox3
+            // widthTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(282, 295);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(70, 20);
-            this.textBox3.TabIndex = 15;
-            this.textBox3.Visible = false;
+            this.widthTextBox.Location = new System.Drawing.Point(282, 295);
+            this.widthTextBox.Name = "widthTextBox";
+            this.widthTextBox.Size = new System.Drawing.Size(70, 20);
+            this.widthTextBox.TabIndex = 15;
+            this.widthTextBox.Visible = false;
             // 
-            // textBox4
+            // heightTextBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(358, 295);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(70, 20);
-            this.textBox4.TabIndex = 16;
-            this.textBox4.Visible = false;
+            this.heightTextBox.Location = new System.Drawing.Point(358, 295);
+            this.heightTextBox.Name = "heightTextBox";
+            this.heightTextBox.Size = new System.Drawing.Size(70, 20);
+            this.heightTextBox.TabIndex = 16;
+            this.heightTextBox.Visible = false;
             // 
-            // label5
+            // newTitleLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(69, 245);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(103, 13);
-            this.label5.TabIndex = 17;
-            this.label5.Text = "New Title (Optional):";
+            this.newTitleLabel.AutoSize = true;
+            this.newTitleLabel.Location = new System.Drawing.Point(69, 245);
+            this.newTitleLabel.Name = "newTitleLabel";
+            this.newTitleLabel.Size = new System.Drawing.Size(103, 13);
+            this.newTitleLabel.TabIndex = 17;
+            this.newTitleLabel.Text = "New Title (Optional):";
             // 
-            // textBox5
+            // newTitleTextBox
             // 
-            this.textBox5.Location = new System.Drawing.Point(178, 242);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(195, 20);
-            this.textBox5.TabIndex = 18;
+            this.newTitleTextBox.Location = new System.Drawing.Point(178, 242);
+            this.newTitleTextBox.Name = "newTitleTextBox";
+            this.newTitleTextBox.Size = new System.Drawing.Size(195, 20);
+            this.newTitleTextBox.TabIndex = 18;
             // 
-            // linkLabel1
+            // helpLinkLabel
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(490, 282);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(29, 13);
-            this.linkLabel1.TabIndex = 19;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Help";
-            this.linkLabel1.Visible = false;
+            this.helpLinkLabel.AutoSize = true;
+            this.helpLinkLabel.Location = new System.Drawing.Point(490, 282);
+            this.helpLinkLabel.Name = "helpLinkLabel";
+            this.helpLinkLabel.Size = new System.Drawing.Size(29, 13);
+            this.helpLinkLabel.TabIndex = 19;
+            this.helpLinkLabel.TabStop = true;
+            this.helpLinkLabel.Text = "Help";
+            this.helpLinkLabel.Visible = false;
             // 
-            // button4
+            // restoreWindowButton
             // 
-            this.button4.Location = new System.Drawing.Point(378, 178);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(97, 29);
-            this.button4.TabIndex = 20;
-            this.button4.Text = "Restore Window";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.restoreWindowButton.Location = new System.Drawing.Point(378, 178);
+            this.restoreWindowButton.Name = "restoreWindowButton";
+            this.restoreWindowButton.Size = new System.Drawing.Size(97, 29);
+            this.restoreWindowButton.TabIndex = 20;
+            this.restoreWindowButton.Text = "Restore Window";
+            this.restoreWindowButton.UseVisualStyleBackColor = true;
+            this.restoreWindowButton.Click += new System.EventHandler(this.restoreWindowButton_Click);
             // 
             // TrayIcon
             // 
@@ -309,93 +308,93 @@ namespace BorderlessMinecraft
             this.Settings.Checked = true;
             this.Settings.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Settings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3,
-            this.toolStripMenuItem4,
-            this.toolStripMenuItem5,
-            this.toolStripMenuItem6});
+            this.startOnBootMenuItem,
+            this.startMinimizedMenuItem,
+            this.minimizeToTrayMenuItem,
+            this.automaticBorderlessMenuItem,
+            this.preserveTaskbarMenuItem,
+            this.showAllClientsMenuItem});
             this.Settings.Name = "Settings";
             this.Settings.Size = new System.Drawing.Size(61, 20);
             this.Settings.Text = "Settings";
             // 
-            // toolStripMenuItem1
+            // startOnBootMenuItem
             // 
-            this.toolStripMenuItem1.CheckOnClick = true;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem1.Text = "Start on Boot";
+            this.startOnBootMenuItem.CheckOnClick = true;
+            this.startOnBootMenuItem.Name = "startOnBootMenuItem";
+            this.startOnBootMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.startOnBootMenuItem.Text = "Start on Boot";
             // 
-            // toolStripMenuItem2
+            // startMinimizedMenuItem
             // 
-            this.toolStripMenuItem2.CheckOnClick = true;
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem2.Text = "Start Minimized";
+            this.startMinimizedMenuItem.CheckOnClick = true;
+            this.startMinimizedMenuItem.Name = "startMinimizedMenuItem";
+            this.startMinimizedMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.startMinimizedMenuItem.Text = "Start Minimized";
             // 
-            // toolStripMenuItem3
+            // minimizeToTrayMenuItem
             // 
-            this.toolStripMenuItem3.CheckOnClick = true;
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem3.Text = "Minimize to Tray";
+            this.minimizeToTrayMenuItem.CheckOnClick = true;
+            this.minimizeToTrayMenuItem.Name = "minimizeToTrayMenuItem";
+            this.minimizeToTrayMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.minimizeToTrayMenuItem.Text = "Minimize to Tray";
             // 
-            // toolStripMenuItem4
+            // automaticBorderlessMenuItem
             // 
-            this.toolStripMenuItem4.CheckOnClick = true;
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem4.Text = "Automatic Borderless";
-            this.toolStripMenuItem4.ToolTipText = "Requires administrator privleges";
+            this.automaticBorderlessMenuItem.CheckOnClick = true;
+            this.automaticBorderlessMenuItem.Name = "automaticBorderlessMenuItem";
+            this.automaticBorderlessMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.automaticBorderlessMenuItem.Text = "Automatic Borderless";
+            this.automaticBorderlessMenuItem.ToolTipText = "Requires administrator privleges";
             // 
-            // toolStripMenuItem5
+            // preserveTaskbarMenuItem
             // 
-            this.toolStripMenuItem5.CheckOnClick = true;
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem5.Text = "Preserve Taskbar";
-            this.toolStripMenuItem5.ToolTipText = "The taskbar will be visible below Minecraft";
+            this.preserveTaskbarMenuItem.CheckOnClick = true;
+            this.preserveTaskbarMenuItem.Name = "preserveTaskbarMenuItem";
+            this.preserveTaskbarMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.preserveTaskbarMenuItem.Text = "Preserve Taskbar";
+            this.preserveTaskbarMenuItem.ToolTipText = "The taskbar will be visible below Minecraft";
             // 
-            // toolStripMenuItem6
+            // showAllClientsMenuItem
             // 
-            this.toolStripMenuItem6.CheckOnClick = true;
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem6.Text = "Show All Clients";
-            this.toolStripMenuItem6.ToolTipText = "Shows non-vanilla MC clients, but may show other Java applications as well";
+            this.showAllClientsMenuItem.CheckOnClick = true;
+            this.showAllClientsMenuItem.Name = "showAllClientsMenuItem";
+            this.showAllClientsMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.showAllClientsMenuItem.Text = "Show All Clients";
+            this.showAllClientsMenuItem.ToolTipText = "Shows non-vanilla MC clients, but may show other Java applications as well";
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(543, 322);
             this.Controls.Add(this.SettingsMenu);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.restoreWindowButton);
+            this.Controls.Add(this.helpLinkLabel);
+            this.Controls.Add(this.newTitleTextBox);
+            this.Controls.Add(this.newTitleLabel);
+            this.Controls.Add(this.heightTextBox);
+            this.Controls.Add(this.widthTextBox);
+            this.Controls.Add(this.yPosTextBox);
+            this.Controls.Add(this.heightLabel);
+            this.Controls.Add(this.widthLabel);
+            this.Controls.Add(this.yPosLabel);
+            this.Controls.Add(this.xPosLabel);
+            this.Controls.Add(this.xPosTextBox);
+            this.Controls.Add(this.advancedCheckBox);
+            this.Controls.Add(this.mainTitlePictureBox);
+            this.Controls.Add(this.setTitleButton);
+            this.Controls.Add(this.refreshButton);
+            this.Controls.Add(this.processesListBox);
+            this.Controls.Add(this.goBorderlessButton);
             this.Controls.Add(this.debugInstructionsLabel);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.SettingsMenu;
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Borderless Minecraft 1.3.0";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainTitlePictureBox)).EndInit();
             this.ToolTipContextMenu.ResumeLayout(false);
             this.SettingsMenu.ResumeLayout(false);
             this.SettingsMenu.PerformLayout();
@@ -406,36 +405,36 @@ namespace BorderlessMinecraft
 
         #endregion
         private System.Windows.Forms.Label debugInstructionsLabel;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button goBorderlessButton;
+        private System.Windows.Forms.ListBox processesListBox;
+        private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.Button setTitleButton;
+        private System.Windows.Forms.PictureBox mainTitlePictureBox;
+        private System.Windows.Forms.CheckBox advancedCheckBox;
+        private System.Windows.Forms.TextBox xPosTextBox;
+        private System.Windows.Forms.Label xPosLabel;
+        private System.Windows.Forms.Label yPosLabel;
+        private System.Windows.Forms.Label widthLabel;
+        private System.Windows.Forms.Label heightLabel;
+        private System.Windows.Forms.TextBox yPosTextBox;
+        private System.Windows.Forms.TextBox widthTextBox;
+        private System.Windows.Forms.TextBox heightTextBox;
+        private System.Windows.Forms.Label newTitleLabel;
+        private System.Windows.Forms.TextBox newTitleTextBox;
+        private System.Windows.Forms.LinkLabel helpLinkLabel;
+        private System.Windows.Forms.Button restoreWindowButton;
         private System.Windows.Forms.NotifyIcon TrayIcon;
         private System.Windows.Forms.ContextMenuStrip ToolTipContextMenu;
         private System.Windows.Forms.ToolStripMenuItem Exit;
         private System.Windows.Forms.MenuStrip SettingsMenu;
         private System.Windows.Forms.ToolStripMenuItem Settings;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem startOnBootMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startMinimizedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minimizeToTrayMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem automaticBorderlessMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuSettings;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem preserveTaskbarMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showAllClientsMenuItem;
     }
 }
 
