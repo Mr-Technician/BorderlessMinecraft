@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BorderlessMinecraft.Configuration;
@@ -41,6 +42,8 @@ namespace BorderlessMinecraft
         {
             InitializeComponent();
             AddProcesses();
+
+            this.Text = GetFormTitle();
 
             //create the ToolTip for advanced mode hover
             ToolTip advancedToolTip = new ToolTip();
@@ -95,6 +98,13 @@ namespace BorderlessMinecraft
                 ShowInTaskbar = false; //When hiding on startup, we need to explicitly set ShowInTaskbar to false
                 TrayIcon.Visible = true;
             }
+        }
+
+        private string GetFormTitle()
+        {
+            AssemblyName assemblyName = Assembly.GetEntryAssembly().GetName();
+            Version version = assemblyName.Version;
+            return $"Borderless Minecraft {version.Major}.{version.Minor}.{version.Build}";
         }
 
         private void ProcessMonitor_OnProcessShouldExit() => Environment.Exit(0);
@@ -344,7 +354,6 @@ namespace BorderlessMinecraft
 
         private void AdvancedParamsTextBox_Validating(object sender, CancelEventArgs e)
         {
-
             TextBox textBox = (TextBox)sender;
             if (!int.TryParse(textBox.Text, out _))
             {
