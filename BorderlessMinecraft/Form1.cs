@@ -131,11 +131,7 @@ namespace BorderlessMinecraft
         private void TrayIcon_Click(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left) //show the window when the tray icon is left clicked
-            {
-                Show();
-                WindowState = FormWindowState.Normal;
-                ShowInTaskbar = true;
-            }
+                ShowWindow();
         }
 
         private void StartOnBootItem_CheckedChanged(object sender, EventArgs e) => Config.StartOnBoot = ((ToolStripMenuItem)sender).Checked;
@@ -154,6 +150,13 @@ namespace BorderlessMinecraft
         private void ShowAllClientsItem_CheckedChanged(object sender, EventArgs e) => Config.ShowAllClients = ((ToolStripMenuItem)sender).Checked;
 
         private void Exit_Click(object sender, EventArgs e) => Close();
+        private void ContextMenuShow_Click(object sender, EventArgs e) => ShowWindow();
+        private void ShowWindow()
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+            ShowInTaskbar = true;
+        }
 
         private void AddProcesses() //method to add processes to list
         {

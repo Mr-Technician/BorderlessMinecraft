@@ -69,7 +69,7 @@ namespace BorderlessMinecraft
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTipContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.Exit = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuShow = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenu = new System.Windows.Forms.MenuStrip();
             this.Settings = new System.Windows.Forms.ToolStripMenuItem();
             this.startOnBootMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -281,10 +281,10 @@ namespace BorderlessMinecraft
             // ToolTipContextMenu
             // 
             this.ToolTipContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Exit,
-            this.ContextMenuSettings});
+            this.ContextMenuShow,
+            this.Exit});
             this.ToolTipContextMenu.Name = "ToolTipContextMenu";
-            this.ToolTipContextMenu.Size = new System.Drawing.Size(117, 48);
+            this.ToolTipContextMenu.Size = new System.Drawing.Size(215, 48);
             // 
             // Exit
             // 
@@ -294,12 +294,13 @@ namespace BorderlessMinecraft
             this.Exit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Exit.Click += new System.EventHandler(this.Exit_Click);
             // 
-            // ContextMenuSettings
+            // ContextMenuShow
             // 
-            this.ContextMenuSettings.Name = "ContextMenuSettings";
-            this.ContextMenuSettings.Size = new System.Drawing.Size(116, 22);
-            this.ContextMenuSettings.Text = "Settings";
-            this.ContextMenuSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ContextMenuShow.Name = "ContextMenuShow";
+            this.ContextMenuShow.Size = new System.Drawing.Size(214, 22);
+            this.ContextMenuShow.Text = "Show Borderless Minecraft";
+            this.ContextMenuShow.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ContextMenuShow.Click += new System.EventHandler(this.ContextMenuShow_Click);
             // 
             // SettingsMenu
             // 
@@ -449,7 +450,7 @@ namespace BorderlessMinecraft
         private System.Windows.Forms.ToolStripMenuItem startMinimizedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minimizeToTrayMenuItem;
         private System.Windows.Forms.ToolStripMenuItem automaticBorderlessMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ContextMenuSettings;
+        private System.Windows.Forms.ToolStripMenuItem ContextMenuShow;
         private System.Windows.Forms.ToolStripMenuItem preserveTaskbarMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showAllClientsMenuItem;
     }
