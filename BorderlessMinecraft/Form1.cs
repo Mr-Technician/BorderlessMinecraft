@@ -18,21 +18,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Collections;
 using BorderlessMinecraft.Configuration;
-using System.Management;
 using BorderlessMinecraft.Processes;
-using static BorderlessMinecraft.DLLInterop; //includ the static DLL Interop class
+using static BorderlessMinecraft.DLLInterop;
 
-// This is the code for your desktop app.
-// Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
 namespace BorderlessMinecraft
 {
@@ -43,16 +36,6 @@ namespace BorderlessMinecraft
         List<int> renamedProcesses = new List<int>(); //PIDs that are renamed
         Config Config { get; } = new Config();
         ProcessMonitor ProcessMonitor { get; }
-
-        //protected override CreateParams CreateParams
-        //{
-        //    get
-        //    {
-        //        var parameters = base.CreateParams;
-        //        parameters.ExStyle |= 0x80; //we need to hide the 
-        //        return parameters;
-        //    }
-        //}
 
         internal MainForm()
         {
@@ -75,6 +58,15 @@ namespace BorderlessMinecraft
             automaticBorderlessMenuItem.Checked = Config.AutomaticBorderless;
             preserveTaskbarMenuItem.Checked = Config.PreserveTaskBar;
             showAllClientsMenuItem.Checked = Config.ShowAllClients;
+            advancedCheckBox.Checked = Config.Advanced;
+            string[] advancedParams = Config.AdvancedParams.Split(',');
+            if (advancedParams.Length == 4)
+            {
+                xPosTextBox.Text = advancedParams[0];
+                yPosTextBox.Text = advancedParams[1];
+                widthTextBox.Text = advancedParams[2];
+                heightTextBox.Text = advancedParams[3];
+            }
 
             ProcessMonitor = new ProcessMonitor(); //create the process monitor
             ProcessMonitor.OnJavaAppStarted += ProcessMonitor_OnJavaAppStarted; //attach events
@@ -201,11 +193,6 @@ namespace BorderlessMinecraft
             }));
         }
 
-        private void debugInstructionsLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void goBorderlessButton_Click(object sender, EventArgs e) //go borderless button
         {
             //default values, changed by advanced mode
@@ -220,14 +207,17 @@ namespace BorderlessMinecraft
             }
 
             //advanced mode checks
-            if (xPosTextBox.Text != "" && int.TryParse(xPosTextBox.Text, out int parsed))
-                xPos = parsed;
-            if (yPosTextBox.Text != "" && int.TryParse(yPosTextBox.Text, out int parsed2))
-                yPos = parsed2;
-            if (widthTextBox.Text != "" && int.TryParse(widthTextBox.Text, out int parsed3))
-                xRes = parsed3;
-            if (heightTextBox.Text != "" && int.TryParse(heightTextBox.Text, out int parsed4))
-                yRes = parsed4;
+            if (advancedCheckBox.Checked)
+            {
+                if (int.TryParse(xPosTextBox.Text, out int parsed))
+                    xPos = parsed;
+                if (int.TryParse(yPosTextBox.Text, out int parsed2))
+                    yPos = parsed2;
+                if (int.TryParse(widthTextBox.Text, out int parsed3))
+                    xRes = parsed3;
+                if (int.TryParse(heightTextBox.Text, out int parsed4))
+                    yRes = parsed4;
+            }
             IntPtr handle = minecraftProcesses[processesListBox.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
             int pid = minecraftProcesses[processesListBox.SelectedIndex].Id; //get the minecraft process by id
             GoBorderless(handle, xPos, yPos, xRes, yRes);
@@ -340,37 +330,43 @@ namespace BorderlessMinecraft
 
         private void advancedCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (advancedCheckBox.Checked) //if advanced mode is on, make visible
+            xPosTextBox.Visible = advancedCheckBox.Checked;
+            yPosTextBox.Visible = advancedCheckBox.Checked;
+            widthTextBox.Visible = advancedCheckBox.Checked;
+            heightTextBox.Visible = advancedCheckBox.Checked;
+            xPosLabel.Visible = advancedCheckBox.Checked;
+            yPosLabel.Visible = advancedCheckBox.Checked;
+            widthLabel.Visible = advancedCheckBox.Checked;
+            heightLabel.Visible = advancedCheckBox.Checked;
+
+            Config.Advanced = advancedCheckBox.Checked;
+        }
+
+        private void AdvancedParamsTextBox_Validating(object sender, CancelEventArgs e)
+        {
+
+            TextBox textBox = (TextBox)sender;
+            if (!int.TryParse(textBox.Text, out _))
             {
-                xPosTextBox.Visible = true;
-                yPosTextBox.Visible = true;
-                widthTextBox.Visible = true;
-                heightTextBox.Visible = true;
-                xPosLabel.Visible = true;
-                yPosLabel.Visible = true;
-                widthLabel.Visible = true;
-                heightLabel.Visible = true;
-            }
-            else
-            {
-                xPosTextBox.Text = "";
-                yPosTextBox.Text = "";
-                widthTextBox.Text = "";
-                heightTextBox.Text = "";
-                xPosTextBox.Visible = false;
-                yPosTextBox.Visible = false;
-                widthTextBox.Visible = false;
-                heightTextBox.Visible = false;
-                xPosLabel.Visible = false;
-                yPosLabel.Visible = false;
-                widthLabel.Visible = false;
-                heightLabel.Visible = false;
+                textBox.Text = "";
+                e.Cancel = true;
             }
         }
 
-        private void xPosLabel_Click(object sender, EventArgs e)
+        private void AdvancedParamsTextBox_Validated(object sender, EventArgs e)
         {
-
+            StoreAdvancedParams();
+        }
+        private void StoreAdvancedParams()
+        {
+            string[] advancedParams = new string[] {
+                xPosTextBox.Text,
+                yPosTextBox.Text,
+                widthTextBox.Text,
+                heightTextBox.Text
+            };
+            string joinedAdvancedParams = string.Join(",", advancedParams);
+            Config.AdvancedParams = joinedAdvancedParams;
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)

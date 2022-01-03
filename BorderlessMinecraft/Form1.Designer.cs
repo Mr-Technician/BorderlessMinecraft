@@ -161,6 +161,8 @@ namespace BorderlessMinecraft
             this.xPosTextBox.Size = new System.Drawing.Size(70, 20);
             this.xPosTextBox.TabIndex = 9;
             this.xPosTextBox.Visible = false;
+            this.xPosTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.AdvancedParamsTextBox_Validating);
+            this.xPosTextBox.Validated += new System.EventHandler(this.AdvancedParamsTextBox_Validated);
             // 
             // xPosLabel
             // 
@@ -171,7 +173,6 @@ namespace BorderlessMinecraft
             this.xPosLabel.TabIndex = 10;
             this.xPosLabel.Text = "X Position";
             this.xPosLabel.Visible = false;
-            this.xPosLabel.Click += new System.EventHandler(this.xPosLabel_Click);
             // 
             // yPosLabel
             // 
@@ -210,6 +211,8 @@ namespace BorderlessMinecraft
             this.yPosTextBox.Size = new System.Drawing.Size(70, 20);
             this.yPosTextBox.TabIndex = 14;
             this.yPosTextBox.Visible = false;
+            this.yPosTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.AdvancedParamsTextBox_Validating);
+            this.yPosTextBox.Validated += new System.EventHandler(this.AdvancedParamsTextBox_Validated);
             // 
             // widthTextBox
             // 
@@ -218,6 +221,8 @@ namespace BorderlessMinecraft
             this.widthTextBox.Size = new System.Drawing.Size(70, 20);
             this.widthTextBox.TabIndex = 15;
             this.widthTextBox.Visible = false;
+            this.widthTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.AdvancedParamsTextBox_Validating);
+            this.widthTextBox.Validated += new System.EventHandler(this.AdvancedParamsTextBox_Validated);
             // 
             // heightTextBox
             // 
@@ -226,6 +231,8 @@ namespace BorderlessMinecraft
             this.heightTextBox.Size = new System.Drawing.Size(70, 20);
             this.heightTextBox.TabIndex = 16;
             this.heightTextBox.Visible = false;
+            this.heightTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.AdvancedParamsTextBox_Validating);
+            this.heightTextBox.Validated += new System.EventHandler(this.AdvancedParamsTextBox_Validated);
             // 
             // newTitleLabel
             // 
@@ -367,6 +374,7 @@ namespace BorderlessMinecraft
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(543, 322);
             this.Controls.Add(this.SettingsMenu);
             this.Controls.Add(this.restoreWindowButton);
