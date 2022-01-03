@@ -276,6 +276,7 @@ namespace BorderlessMinecraft
             this.TrayIcon.ContextMenuStrip = this.ToolTipContextMenu;
             this.TrayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("TrayIcon.Icon")));
             this.TrayIcon.Text = "Borderless Minecraft";
+            this.TrayIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TrayIcon_Click);
             // 
             // ToolTipContextMenu
             // 
@@ -291,6 +292,7 @@ namespace BorderlessMinecraft
             this.Exit.Size = new System.Drawing.Size(116, 22);
             this.Exit.Text = "Exit";
             this.Exit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Exit.Click += new System.EventHandler(this.Exit_Click);
             // 
             // ContextMenuSettings
             // 
@@ -331,6 +333,7 @@ namespace BorderlessMinecraft
             this.startOnBootMenuItem.Name = "startOnBootMenuItem";
             this.startOnBootMenuItem.Size = new System.Drawing.Size(187, 22);
             this.startOnBootMenuItem.Text = "Start on Boot";
+            this.startOnBootMenuItem.CheckedChanged += new System.EventHandler(this.StartOnBootItem_CheckedChanged);
             // 
             // startMinimizedMenuItem
             // 
@@ -338,6 +341,7 @@ namespace BorderlessMinecraft
             this.startMinimizedMenuItem.Name = "startMinimizedMenuItem";
             this.startMinimizedMenuItem.Size = new System.Drawing.Size(187, 22);
             this.startMinimizedMenuItem.Text = "Start Minimized";
+            this.startMinimizedMenuItem.CheckedChanged += new System.EventHandler(this.StartMinimizedItem_CheckedChanged);
             // 
             // minimizeToTrayMenuItem
             // 
@@ -345,6 +349,7 @@ namespace BorderlessMinecraft
             this.minimizeToTrayMenuItem.Name = "minimizeToTrayMenuItem";
             this.minimizeToTrayMenuItem.Size = new System.Drawing.Size(187, 22);
             this.minimizeToTrayMenuItem.Text = "Minimize to Tray";
+            this.minimizeToTrayMenuItem.CheckedChanged += new System.EventHandler(this.MinimizeToTrayItem_CheckedChanged);
             // 
             // automaticBorderlessMenuItem
             // 
@@ -353,6 +358,7 @@ namespace BorderlessMinecraft
             this.automaticBorderlessMenuItem.Size = new System.Drawing.Size(187, 22);
             this.automaticBorderlessMenuItem.Text = "Automatic Borderless";
             this.automaticBorderlessMenuItem.ToolTipText = "Requires administrator privleges";
+            this.automaticBorderlessMenuItem.CheckedChanged += new System.EventHandler(this.AutoBorderlessItem_CheckedChanged);
             // 
             // preserveTaskbarMenuItem
             // 
@@ -361,6 +367,7 @@ namespace BorderlessMinecraft
             this.preserveTaskbarMenuItem.Size = new System.Drawing.Size(187, 22);
             this.preserveTaskbarMenuItem.Text = "Preserve Taskbar";
             this.preserveTaskbarMenuItem.ToolTipText = "The taskbar will be visible below Minecraft";
+            this.preserveTaskbarMenuItem.CheckedChanged += new System.EventHandler(this.PreserveTaskBarItem_CheckedChanged);
             // 
             // showAllClientsMenuItem
             // 
@@ -369,6 +376,7 @@ namespace BorderlessMinecraft
             this.showAllClientsMenuItem.Size = new System.Drawing.Size(187, 22);
             this.showAllClientsMenuItem.Text = "Show All Clients";
             this.showAllClientsMenuItem.ToolTipText = "Shows non-vanilla MC clients, but may show other Java applications as well";
+            this.showAllClientsMenuItem.CheckedChanged += new System.EventHandler(this.ShowAllClientsItem_CheckedChanged);
             // 
             // MainForm
             // 
@@ -402,6 +410,7 @@ namespace BorderlessMinecraft
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "Borderless Minecraft <version>";
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.mainTitlePictureBox)).EndInit();
             this.ToolTipContextMenu.ResumeLayout(false);
             this.SettingsMenu.ResumeLayout(false);

@@ -55,10 +55,15 @@ namespace BorderlessMinecraft
 
             advancedToolTip.SetToolTip(this.advancedCheckBox, "Enables the use of custom positioning and sizing.");
 
+            ProcessMonitor = new ProcessMonitor(); //create the process monitor, must happen before settings are loaded
+            ProcessMonitor.OnJavaAppStarted += ProcessMonitor_OnJavaAppStarted; //attach events
+            ProcessMonitor.OnJavaAppStopped += ProcessMonitor_OnJavaAppStopped;
+            ProcessMonitor.OnProcessShouldExit += ProcessMonitor_OnProcessShouldExit;
+
             startOnBootMenuItem.Checked = Config.StartOnBoot;
             startMinimizedMenuItem.Checked = Config.StartMinimized;
             minimizeToTrayMenuItem.Checked = Config.MinimizeToTray;
-            automaticBorderlessMenuItem.Checked = Config.AutomaticBorderless;
+            automaticBorderlessMenuItem.Checked = Config.AutomaticBorderless; //starts the ProcessMonitor if set to true
             preserveTaskbarMenuItem.Checked = Config.PreserveTaskBar;
             showAllClientsMenuItem.Checked = Config.ShowAllClients;
             advancedCheckBox.Checked = Config.Advanced;
@@ -70,26 +75,6 @@ namespace BorderlessMinecraft
                 widthTextBox.Text = advancedParams[2];
                 heightTextBox.Text = advancedParams[3];
             }
-
-            ProcessMonitor = new ProcessMonitor(); //create the process monitor
-            ProcessMonitor.OnJavaAppStarted += ProcessMonitor_OnJavaAppStarted; //attach events
-            ProcessMonitor.OnJavaAppStopped += ProcessMonitor_OnJavaAppStopped;
-            ProcessMonitor.OnProcessShouldExit += ProcessMonitor_OnProcessShouldExit;
-            if (Config.AutomaticBorderless) //start listening if auto borderless is enabled
-                ProcessMonitor.Start(); //this call must occur after attaching the OnProcessShouldExit event
-
-            //set up event handlers
-            Resize += MainForm_Resize1;
-
-            TrayIcon.MouseClick += TrayIcon_Click;
-            Exit.Click += Exit_Click;
-
-            startOnBootMenuItem.CheckedChanged += StartOnBootItem_CheckedChanged;
-            startMinimizedMenuItem.CheckedChanged += StartMinimizedItem_CheckedChanged;
-            minimizeToTrayMenuItem.CheckedChanged += MinimizeToTrayItem_CheckedChanged;
-            automaticBorderlessMenuItem.CheckedChanged += AutoBorderlessItem_CheckedChanged;
-            preserveTaskbarMenuItem.CheckedChanged += PreserveTaskBarItem_CheckedChanged;
-            showAllClientsMenuItem.CheckedChanged += ShowAllClientsItem_CheckedChanged;
 
             if (Config.StartMinimized && IsAutoStarted()) //ensure the app has autostarted and minimize to tray is enabled. This ensures normal starts will not be minimized
             {
@@ -383,7 +368,7 @@ namespace BorderlessMinecraft
             AddProcesses(); //refresh the process list when changing the filter option
         }
 
-        private void MainForm_Resize1(object sender, EventArgs e)
+        private void MainForm_Resize(object sender, EventArgs e)
         {
             //if the form is minimized  
             //hide it from the task bar  
