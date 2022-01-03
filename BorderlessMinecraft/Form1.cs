@@ -114,7 +114,7 @@ namespace BorderlessMinecraft
                 }
 
                 if (process.MainWindowTitle.Contains("Minecraft")) //for now just check the title with a magic string. In the future this will allow better control. Also note that we have already filtered out any non-java process
-                    GoBorderless(handle, 0, 0, GetScreenRezx(), GetScreenRezy()); //go borderless
+                    TriggerBorderless(handle); //go borderless
             }
             AddProcessesThreadSafe();
         }
@@ -197,6 +197,14 @@ namespace BorderlessMinecraft
 
         private void goBorderlessButton_Click(object sender, EventArgs e) //go borderless button
         {
+            IntPtr handle = minecraftProcesses[processesListBox.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            TriggerBorderless(handle);
+            int pid = minecraftProcesses[processesListBox.SelectedIndex].Id; //get the minecraft process by id
+            if (!AutoBorderlessPID.HasValue) //save this pid to effectively disable auto borderless. Otherwise a second instance of MC would also go borderless
+                AutoBorderlessPID = pid;
+        }
+
+        private void TriggerBorderless(IntPtr handle) {
             //default values, changed by advanced mode
             int xPos = 0;
             int yPos = 0;
@@ -220,11 +228,7 @@ namespace BorderlessMinecraft
                 if (int.TryParse(heightTextBox.Text, out int parsed4))
                     yRes = parsed4;
             }
-            IntPtr handle = minecraftProcesses[processesListBox.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
-            int pid = minecraftProcesses[processesListBox.SelectedIndex].Id; //get the minecraft process by id
             GoBorderless(handle, xPos, yPos, xRes, yRes);
-            if (!AutoBorderlessPID.HasValue) //save this pid to effectively disable auto borderless. Otherwise a second instance of MC would also go borderless
-                AutoBorderlessPID = pid;
         }
 
         private void refreshButton_Click(object sender, EventArgs e) //refresh button
