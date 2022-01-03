@@ -147,7 +147,11 @@ namespace BorderlessMinecraft
                 ProcessMonitor.Stop();
         }
         private void PreserveTaskBarItem_CheckedChanged(object sender, EventArgs e) => Config.PreserveTaskBar = ((ToolStripMenuItem)sender).Checked;
-        private void ShowAllClientsItem_CheckedChanged(object sender, EventArgs e) => Config.ShowAllClients = ((ToolStripMenuItem)sender).Checked;
+        private void ShowAllClientsItem_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.ShowAllClients = ((ToolStripMenuItem)sender).Checked;
+            AddProcesses();
+        }
 
         private void Exit_Click(object sender, EventArgs e) => Close();
         private void ContextMenuShow_Click(object sender, EventArgs e) => ShowWindow();
@@ -364,11 +368,6 @@ namespace BorderlessMinecraft
             };
             string joinedAdvancedParams = string.Join(",", advancedParams);
             Config.AdvancedParams = joinedAdvancedParams;
-        }
-
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-            AddProcesses(); //refresh the process list when changing the filter option
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
