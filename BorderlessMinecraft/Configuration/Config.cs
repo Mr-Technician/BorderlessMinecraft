@@ -16,18 +16,21 @@ namespace BorderlessMinecraft.Configuration
         {
             Registry = new RegistryEditor(@"SOFTWARE\BorderlessMinecraft"); //open the registry in this location
 
-            if (bool.TryParse((string)Registry.GetKeyValue(nameof(StartOnBoot)), out bool value1))
-                _startOnBoot = value1;
-            if (bool.TryParse((string)Registry.GetKeyValue(nameof(StartMinimized)), out bool value2))
-                _startMinimized = value2;
-            if (bool.TryParse((string)Registry.GetKeyValue(nameof(MinimizeToTray)), out bool value3))
-                _minimizeToTray = value3;
-            if (bool.TryParse((string)Registry.GetKeyValue(nameof(AutomaticBorderless)), out bool value4))
-                _automaticBorderless = value4;
-            if (bool.TryParse((string)Registry.GetKeyValue(nameof(PreserveTaskBar)), out bool value5))
-                _preserveTaskBar = value5;
-            if (bool.TryParse((string)Registry.GetKeyValue(nameof(ShowAllClients)), out bool value6))
-                _showAllClients = value6;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(StartOnBoot)), out bool startOnBoot))
+                _startOnBoot = startOnBoot;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(StartMinimized)), out bool startMinimized))
+                _startMinimized = startMinimized;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(MinimizeToTray)), out bool minimizeToTray))
+                _minimizeToTray = minimizeToTray;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(AutomaticBorderless)), out bool automaticBorderless))
+                _automaticBorderless = automaticBorderless;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(PreserveTaskBar)), out bool preserveTaskBar))
+                _preserveTaskBar = preserveTaskBar;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(ShowAllClients)), out bool showAllClients))
+                _showAllClients = showAllClients;
+            if (bool.TryParse((string)Registry.GetKeyValue(nameof(Advanced)), out bool advanced))
+                _advanced = advanced;
+            _advancedParams = "" + (string)Registry.GetKeyValue(nameof(AdvancedParams));
         }
 
         public bool StartOnBoot
@@ -88,5 +91,23 @@ namespace BorderlessMinecraft.Configuration
             }
         }
         private bool _showAllClients;
+        public bool Advanced
+        {
+            get => _advanced; set
+            {
+                _advanced = value;
+                Registry.SetKeyValue(nameof(Advanced), value);
+            }
+        }
+        private bool _advanced;
+        public string AdvancedParams
+        {
+            get => _advancedParams; set
+            {
+                _advancedParams = value;
+                Registry.SetKeyValue(nameof(AdvancedParams), value);
+            }
+        }
+        private string _advancedParams;
     }
 }

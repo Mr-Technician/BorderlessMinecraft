@@ -18,25 +18,19 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Collections;
 using BorderlessMinecraft.Configuration;
-using System.Management;
 using BorderlessMinecraft.Processes;
-using static BorderlessMinecraft.DLLInterop; //includ the static DLL Interop class
+using static BorderlessMinecraft.DLLInterop;
 
-// This is the code for your desktop app.
-// Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
 
 namespace BorderlessMinecraft
 {
-    internal partial class Form1 : Form
+    internal partial class MainForm : Form
     {
         int? AutoBorderlessPID; //the process id of an automatically set borderless window
         Process[] minecraftProcesses; //initializes an array of processess
@@ -44,57 +38,43 @@ namespace BorderlessMinecraft
         Config Config { get; } = new Config();
         ProcessMonitor ProcessMonitor { get; }
 
-        //protected override CreateParams CreateParams
-        //{
-        //    get
-        //    {
-        //        var parameters = base.CreateParams;
-        //        parameters.ExStyle |= 0x80; //we need to hide the 
-        //        return parameters;
-        //    }
-        //}
-
-        internal Form1()
+        internal MainForm()
         {
             InitializeComponent();
             AddProcesses();
 
+            Text = GetFormTitle();
+
             //create the ToolTip for advanced mode hover
-            ToolTip toolTip1 = new ToolTip();
+            ToolTip advancedToolTip = new ToolTip();
 
-            toolTip1.AutoPopDelay = 5000;
-            toolTip1.InitialDelay = 1;
-            toolTip1.ReshowDelay = 500;
-            toolTip1.ShowAlways = true;
+            advancedToolTip.AutoPopDelay = 5000;
+            advancedToolTip.InitialDelay = 1;
+            advancedToolTip.ReshowDelay = 500;
+            advancedToolTip.ShowAlways = true;
 
-            toolTip1.SetToolTip(this.checkBox1, "Enables the use of custom positioning and sizing.");
+            advancedToolTip.SetToolTip(advancedCheckBox, "Enables the use of custom positioning and sizing.");
 
-            toolStripMenuItem1.Checked = Config.StartOnBoot;
-            toolStripMenuItem2.Checked = Config.StartMinimized;
-            toolStripMenuItem3.Checked = Config.MinimizeToTray;
-            toolStripMenuItem4.Checked = Config.AutomaticBorderless;
-            toolStripMenuItem5.Checked = Config.PreserveTaskBar;
-            toolStripMenuItem6.Checked = Config.ShowAllClients;
-
-            ProcessMonitor = new ProcessMonitor(); //create the process monitor
+            ProcessMonitor = new ProcessMonitor(); //create the process monitor, must happen before settings are loaded
             ProcessMonitor.OnJavaAppStarted += ProcessMonitor_OnJavaAppStarted; //attach events
             ProcessMonitor.OnJavaAppStopped += ProcessMonitor_OnJavaAppStopped;
             ProcessMonitor.OnProcessShouldExit += ProcessMonitor_OnProcessShouldExit;
-            if (Config.AutomaticBorderless) //start listening if auto borderless is enabled
-                ProcessMonitor.Start(); //this call must occur after attaching the OnProcessShouldExit event
 
-            //set up event handlers
-            Resize += Form1_Resize1;
-
-            TrayIcon.MouseClick += TrayIcon_Click;
-            Exit.Click += Exit_Click;
-
-            toolStripMenuItem1.CheckedChanged += StartOnBootItem_CheckedChanged;
-            toolStripMenuItem2.CheckedChanged += StartMinimizedItem_CheckedChanged;
-            toolStripMenuItem3.CheckedChanged += MinimizeToTrayItem_CheckedChanged;
-            toolStripMenuItem4.CheckedChanged += AutoBorderlessItem_CheckedChanged;
-            toolStripMenuItem5.CheckedChanged += PreserveTaskBarItem_CheckedChanged;
-            toolStripMenuItem6.CheckedChanged += ShowAllClientsItem_CheckedChanged;
+            startOnBootMenuItem.Checked = Config.StartOnBoot;
+            startMinimizedMenuItem.Checked = Config.StartMinimized;
+            minimizeToTrayMenuItem.Checked = Config.MinimizeToTray;
+            automaticBorderlessMenuItem.Checked = Config.AutomaticBorderless; //starts the ProcessMonitor if set to true
+            preserveTaskbarMenuItem.Checked = Config.PreserveTaskBar;
+            showAllClientsMenuItem.Checked = Config.ShowAllClients;
+            advancedCheckBox.Checked = Config.Advanced;
+            string[] advancedParams = Config.AdvancedParams.Split(',');
+            if (advancedParams.Length == 4)
+            {
+                xPosTextBox.Text = advancedParams[0];
+                yPosTextBox.Text = advancedParams[1];
+                widthTextBox.Text = advancedParams[2];
+                heightTextBox.Text = advancedParams[3];
+            }
 
             if (Config.StartMinimized && IsAutoStarted()) //ensure the app has autostarted and minimize to tray is enabled. This ensures normal starts will not be minimized
             {
@@ -103,6 +83,13 @@ namespace BorderlessMinecraft
                 ShowInTaskbar = false; //When hiding on startup, we need to explicitly set ShowInTaskbar to false
                 TrayIcon.Visible = true;
             }
+        }
+
+        private string GetFormTitle()
+        {
+            AssemblyName assemblyName = Assembly.GetEntryAssembly().GetName();
+            Version version = assemblyName.Version;
+            return $"Borderless Minecraft {version.Major}.{version.Minor}.{version.Build}";
         }
 
         private void ProcessMonitor_OnProcessShouldExit() => Environment.Exit(0);
@@ -127,7 +114,7 @@ namespace BorderlessMinecraft
                 }
 
                 if (process.MainWindowTitle.Contains("Minecraft")) //for now just check the title with a magic string. In the future this will allow better control. Also note that we have already filtered out any non-java process
-                    GoBorderless(handle, 0, 0, GetScreenRezx(), GetScreenRezy()); //go borderless
+                    TriggerBorderless(handle); //go borderless
             }
             AddProcessesThreadSafe();
         }
@@ -144,11 +131,7 @@ namespace BorderlessMinecraft
         private void TrayIcon_Click(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left) //show the window when the tray icon is left clicked
-            {
-                Show();
-                WindowState = FormWindowState.Normal;
-                ShowInTaskbar = true;
-            }
+                ShowWindow();
         }
 
         private void StartOnBootItem_CheckedChanged(object sender, EventArgs e) => Config.StartOnBoot = ((ToolStripMenuItem)sender).Checked;
@@ -164,16 +147,27 @@ namespace BorderlessMinecraft
                 ProcessMonitor.Stop();
         }
         private void PreserveTaskBarItem_CheckedChanged(object sender, EventArgs e) => Config.PreserveTaskBar = ((ToolStripMenuItem)sender).Checked;
-        private void ShowAllClientsItem_CheckedChanged(object sender, EventArgs e) => Config.ShowAllClients = ((ToolStripMenuItem)sender).Checked;
+        private void ShowAllClientsItem_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.ShowAllClients = ((ToolStripMenuItem)sender).Checked;
+            AddProcesses();
+        }
 
         private void Exit_Click(object sender, EventArgs e) => Close();
+        private void ContextMenuShow_Click(object sender, EventArgs e) => ShowWindow();
+        private void ShowWindow()
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+            ShowInTaskbar = true;
+        }
 
         private void AddProcesses() //method to add processes to list
         {
-            listBox1.Items.Clear(); //clear the listbox on refresh
-            button1.Enabled = false; //disable the button by default
-            button3.Enabled = false; //disable the button by default
-            button4.Enabled = false; //disable the button by default
+            processesListBox.Items.Clear(); //clear the listbox on refresh
+            goBorderlessButton.Enabled = false; //disable the button by default
+            setTitleButton.Enabled = false; //disable the button by default
+            restoreWindowButton.Enabled = false; //disable the button by default
 
             if (Config.ShowAllClients) //if the checkbox is checked, no title filtering will occur
             {
@@ -186,7 +180,7 @@ namespace BorderlessMinecraft
 
             foreach (Process proc in minecraftProcesses)
             {
-                listBox1.Items.Add(proc.MainWindowTitle); //adds process title to list
+                processesListBox.Items.Add(proc.MainWindowTitle); //adds process title to list
             }
         }
 
@@ -201,13 +195,16 @@ namespace BorderlessMinecraft
             }));
         }
 
-        private void debugInstructionsLabel_Click(object sender, EventArgs e)
+        private void goBorderlessButton_Click(object sender, EventArgs e) //go borderless button
         {
-
+            IntPtr handle = minecraftProcesses[processesListBox.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            TriggerBorderless(handle);
+            int pid = minecraftProcesses[processesListBox.SelectedIndex].Id; //get the minecraft process by id
+            if (!AutoBorderlessPID.HasValue) //save this pid to effectively disable auto borderless. Otherwise a second instance of MC would also go borderless
+                AutoBorderlessPID = pid;
         }
 
-        private void button1_Click(object sender, EventArgs e) //go borderless button
-        {
+        private void TriggerBorderless(IntPtr handle) {
             //default values, changed by advanced mode
             int xPos = 0;
             int yPos = 0;
@@ -220,45 +217,44 @@ namespace BorderlessMinecraft
             }
 
             //advanced mode checks
-            if (textBox1.Text != "" && int.TryParse(textBox1.Text, out int parsed))
-                xPos = parsed;
-            if (textBox2.Text != "" && int.TryParse(textBox2.Text, out int parsed2))
-                yPos = parsed2;
-            if (textBox3.Text != "" && int.TryParse(textBox3.Text, out int parsed3))
-                xRes = parsed3;
-            if (textBox4.Text != "" && int.TryParse(textBox4.Text, out int parsed4))
-                yRes = parsed4;
-            IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
-            int pid = minecraftProcesses[listBox1.SelectedIndex].Id; //get the minecraft process by id
+            if (advancedCheckBox.Checked)
+            {
+                if (int.TryParse(xPosTextBox.Text, out int parsed))
+                    xPos = parsed;
+                if (int.TryParse(yPosTextBox.Text, out int parsed2))
+                    yPos = parsed2;
+                if (int.TryParse(widthTextBox.Text, out int parsed3))
+                    xRes = parsed3;
+                if (int.TryParse(heightTextBox.Text, out int parsed4))
+                    yRes = parsed4;
+            }
             GoBorderless(handle, xPos, yPos, xRes, yRes);
-            if (!AutoBorderlessPID.HasValue) //save this pid to effectively disable auto borderless. Otherwise a second instance of MC would also go borderless
-                AutoBorderlessPID = pid;
         }
 
-        private void button2_Click(object sender, EventArgs e) //refresh button
+        private void refreshButton_Click(object sender, EventArgs e) //refresh button
         {
             AddProcesses();
         }
 
-        private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void processesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex > -1) //checks if something is selected
+            if (processesListBox.SelectedIndex > -1) //checks if something is selected
             {
-                button1.Enabled = true; //enable the button when a session is seleced
-                button3.Enabled = true; //enable the button when a session is seleced
-                button4.Enabled = true; //enable the button when a session is seleced
+                goBorderlessButton.Enabled = true; //enable the button when a session is seleced
+                setTitleButton.Enabled = true; //enable the button when a session is seleced
+                restoreWindowButton.Enabled = true; //enable the button when a session is seleced
             }
         }
 
-        private void button3_Click(object sender, EventArgs e) //edit title button
+        private void setTitleButton_Click(object sender, EventArgs e) //edit title button
         {
-            IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
-            int PID = minecraftProcesses[listBox1.SelectedIndex].Id;
-            string currentTitle = minecraftProcesses[listBox1.SelectedIndex].MainWindowTitle; //gets the minecraft process by index, and then its title
+            IntPtr handle = minecraftProcesses[processesListBox.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            int PID = minecraftProcesses[processesListBox.SelectedIndex].Id;
+            string currentTitle = minecraftProcesses[processesListBox.SelectedIndex].MainWindowTitle; //gets the minecraft process by index, and then its title
             string title;
-            if (textBox5.Text != "") //if the textbox has content, use for title
+            if (newTitleTextBox.Text != "") //if the textbox has content, use for title
             {
-                title = textBox5.Text;
+                title = newTitleTextBox.Text;
 
             }
             else //if the textbox is empty, use default
@@ -272,10 +268,10 @@ namespace BorderlessMinecraft
             }
 
             AddProcesses(); //after rename, refresh the list
-            textBox5.Text = ""; //reset text
+            newTitleTextBox.Text = ""; //reset text
         }
 
-        private void button4_Click(object sender, EventArgs e) //restore window button
+        private void restoreWindowButton_Click(object sender, EventArgs e) //restore window button
         {
             //default values, changed by advanced mode
             int xPos = GetCenterx();
@@ -283,44 +279,44 @@ namespace BorderlessMinecraft
             int xRes = xDefaultRes;
             int yRes = yDefaultRes;
 
-            if (textBox1.Text != "")
+            if (xPosTextBox.Text != "")
             {
                 try
                 {
-                    xPos = Convert.ToInt32(textBox1.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                    xPos = Convert.ToInt32(xPosTextBox.Text); //if there is content in the textbox, an attempt is made to assign it to variable
                 }
                 catch
                 {
                     xPos = GetCenterx();
                 }
             }
-            if (textBox2.Text != "")
+            if (yPosTextBox.Text != "")
             {
                 try
                 {
-                    yPos = Convert.ToInt32(textBox2.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                    yPos = Convert.ToInt32(yPosTextBox.Text); //if there is content in the textbox, an attempt is made to assign it to variable
                 }
                 catch
                 {
                     yPos = GetCentery();
                 }
             }
-            if (textBox3.Text != "")
+            if (widthTextBox.Text != "")
             {
                 try
                 {
-                    xRes = Convert.ToInt32(textBox3.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                    xRes = Convert.ToInt32(widthTextBox.Text); //if there is content in the textbox, an attempt is made to assign it to variable
                 }
                 catch
                 {
                     xRes = xDefaultRes;
                 }
             }
-            if (textBox4.Text != "")
+            if (heightTextBox.Text != "")
             {
                 try
                 {
-                    yRes = Convert.ToInt32(textBox4.Text); //if there is content in the textbox, an attempt is made to assign it to variable
+                    yRes = Convert.ToInt32(heightTextBox.Text); //if there is content in the textbox, an attempt is made to assign it to variable
                 }
                 catch
                 {
@@ -328,8 +324,8 @@ namespace BorderlessMinecraft
                 }
             }
 
-            IntPtr handle = minecraftProcesses[listBox1.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
-            int pid = minecraftProcesses[listBox1.SelectedIndex].Id; //get the pid
+            IntPtr handle = minecraftProcesses[processesListBox.SelectedIndex].MainWindowHandle; //gets the minecraft process by index, and then its handle
+            int pid = minecraftProcesses[processesListBox.SelectedIndex].Id; //get the pid
             RestoreWindow(handle);
             UndoBorderless(handle);
             SetPos(handle, xPos, yPos, xRes, yRes);
@@ -338,47 +334,47 @@ namespace BorderlessMinecraft
                 AutoBorderlessPID = null;
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void advancedCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox1.Checked) //if advanced mode is on, make visible
+            xPosTextBox.Visible = advancedCheckBox.Checked;
+            yPosTextBox.Visible = advancedCheckBox.Checked;
+            widthTextBox.Visible = advancedCheckBox.Checked;
+            heightTextBox.Visible = advancedCheckBox.Checked;
+            xPosLabel.Visible = advancedCheckBox.Checked;
+            yPosLabel.Visible = advancedCheckBox.Checked;
+            widthLabel.Visible = advancedCheckBox.Checked;
+            heightLabel.Visible = advancedCheckBox.Checked;
+
+            Config.Advanced = advancedCheckBox.Checked;
+        }
+
+        private void AdvancedParamsTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (!int.TryParse(textBox.Text, out _))
             {
-                textBox1.Visible = true;
-                textBox2.Visible = true;
-                textBox3.Visible = true;
-                textBox4.Visible = true;
-                label1.Visible = true;
-                label2.Visible = true;
-                label3.Visible = true;
-                label4.Visible = true;
-            }
-            else
-            {
-                textBox1.Text = "";
-                textBox2.Text = "";
-                textBox3.Text = "";
-                textBox4.Text = "";
-                textBox1.Visible = false;
-                textBox2.Visible = false;
-                textBox3.Visible = false;
-                textBox4.Visible = false;
-                label1.Visible = false;
-                label2.Visible = false;
-                label3.Visible = false;
-                label4.Visible = false;
+                textBox.Text = "";
+                e.Cancel = true;
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void AdvancedParamsTextBox_Validated(object sender, EventArgs e)
         {
-
+            StoreAdvancedParams();
+        }
+        private void StoreAdvancedParams()
+        {
+            string[] advancedParams = new string[] {
+                xPosTextBox.Text,
+                yPosTextBox.Text,
+                widthTextBox.Text,
+                heightTextBox.Text
+            };
+            string joinedAdvancedParams = string.Join(",", advancedParams);
+            Config.AdvancedParams = joinedAdvancedParams;
         }
 
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-            AddProcesses(); //refresh the process list when changing the filter option
-        }
-
-        private void Form1_Resize1(object sender, EventArgs e)
+        private void MainForm_Resize(object sender, EventArgs e)
         {
             //if the form is minimized  
             //hide it from the task bar  
