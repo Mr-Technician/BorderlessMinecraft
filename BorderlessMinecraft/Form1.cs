@@ -43,7 +43,7 @@ namespace BorderlessMinecraft
             InitializeComponent();
             AddProcesses();
 
-            this.Text = GetFormTitle();
+            Text = GetFormTitle();
 
             //create the ToolTip for advanced mode hover
             ToolTip advancedToolTip = new ToolTip();
@@ -53,7 +53,7 @@ namespace BorderlessMinecraft
             advancedToolTip.ReshowDelay = 500;
             advancedToolTip.ShowAlways = true;
 
-            advancedToolTip.SetToolTip(this.advancedCheckBox, "Enables the use of custom positioning and sizing.");
+            advancedToolTip.SetToolTip(advancedCheckBox, "Enables the use of custom positioning and sizing.");
 
             ProcessMonitor = new ProcessMonitor(); //create the process monitor, must happen before settings are loaded
             ProcessMonitor.OnJavaAppStarted += ProcessMonitor_OnJavaAppStarted; //attach events
