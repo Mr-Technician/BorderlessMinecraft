@@ -11,7 +11,7 @@ Clicking "Set Title" is for usage with multiple accounts, and will append "(Seco
 
 Alteratively, you can click "Advanced" and enter a size and position manually.
 
-## New features in 1.3.0
+## New features in 1.3.x
 
 Settings are now saved when the app is closed.
 
@@ -20,7 +20,7 @@ The settings menu has six options:
 - Start on boot: pretty self explanatory. :)
 - Start minimized: When start on boot is enabled, Borderless Minecraft will launch minimized.
 - Minimize to tray: Clicking minimized will hide Borderless Minecraft in the tray and remove it from the taskbar. You can click its tray icon to bring it back.
-- Automatic borderless: Minecraft will go borderless autoamtically when launched. As of 1.3.0, this only works for for vanilla and any java window with "Minecraft" in the title.
+- Automatic borderless: Minecraft will go borderless autoamtically when launched. As of 1.3.0, this only works for for vanilla and any java window with "Minecraft" in the title. It will use the advanced mode settings if they are specified.
 - Preserve Taskbar: When going borderless, the taskbar will remain visible.
 - Show all clients: Shows all Java apps instead of showing only Minecraft processes.
 
