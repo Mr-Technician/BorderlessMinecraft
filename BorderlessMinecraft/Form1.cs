@@ -98,22 +98,31 @@ namespace BorderlessMinecraft
         {
             if (!AutoBorderlessPID.HasValue) //if no window has been made borderless, make the java app that just opened borderless
             {
+                int tries = 0;
                 AutoBorderlessPID = pid; //store the pid
                 IntPtr handle = default;
-                bool HandleFound = false;
                 Process process = null;
-                while (!HandleFound)
+                while (tries < 60) //try to fetch the handle 60 times, or for approximately 15 seconds
                 {
-                    process = Process.GetProcessById(AutoBorderlessPID.Value); //get the process by ID
+                    try
+                    {
+                        process = Process.GetProcessById(AutoBorderlessPID.GetValueOrDefault());
+                    }
+                    catch (ArgumentException)
+                    {
+                        AutoBorderlessPID = null; //reset saved PID
+                        break; //exit loop if the process cannot be found
+                    }
                     if (process.MainWindowHandle != default) //check if the handle exists
                     {
-                        HandleFound = true;
                         handle = process.MainWindowHandle; //if yes, save the handle
+                        break; //exit loop once found
                     }
+                    tries++;
                     await Task.Delay(250); //if no, delay 250 ms
                 }
 
-                if (process.MainWindowTitle.Contains("Minecraft")) //for now just check the title with a magic string. In the future this will allow better control. Also note that we have already filtered out any non-java process
+                if (process != null && process.MainWindowTitle.Contains("Minecraft")) //for now just check the title with a magic string. In the future this will allow better control. Also note that we have already filtered out any non-java process
                     TriggerBorderless(handle); //go borderless
             }
             AddProcessesThreadSafe();
@@ -164,6 +173,7 @@ namespace BorderlessMinecraft
 
         private void AddProcesses() //method to add processes to list
         {
+            processesListBox.Enabled = true; //enables 
             processesListBox.Items.Clear(); //clear the listbox on refresh
             goBorderlessButton.Enabled = false; //disable the button by default
             setTitleButton.Enabled = false; //disable the button by default
@@ -178,6 +188,15 @@ namespace BorderlessMinecraft
                 minecraftProcesses = GetProcesses(renamedProcesses, "Minecraft");
             }
 
+            if (minecraftProcesses.Length == 0) // If no processes are found
+            {
+                processesListBox.Enabled = false; // Disable the ListBox so it cannot be selected
+                processesListBox.Items.Add("Found no processes");  // Adds "Found no processes" to the list box
+                if (Config.ShowAllClients) { return; } // Return if Show All Clients is enabled
+                processesListBox.Items.Add("Tip: You can turn on all clients by going to"); // Adds "Tip: You can turn on all clients by going to" to ListBox
+                processesListBox.Items.Add("Settings > Show All Clients"); //Adds "Settings > Show All Clients" to list box
+                return; //Returns as rest of the code is not needed to be ran
+            }
             foreach (Process proc in minecraftProcesses)
             {
                 processesListBox.Items.Add(proc.MainWindowTitle); //adds process title to list
