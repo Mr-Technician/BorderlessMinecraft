@@ -98,22 +98,31 @@ namespace BorderlessMinecraft
         {
             if (!AutoBorderlessPID.HasValue) //if no window has been made borderless, make the java app that just opened borderless
             {
+                int tries = 0;
                 AutoBorderlessPID = pid; //store the pid
                 IntPtr handle = default;
-                bool HandleFound = false;
                 Process process = null;
-                while (!HandleFound)
+                while (tries < 60) //try to fetch the handle 60 times, or for approximately 15 seconds
                 {
-                    process = Process.GetProcessById(AutoBorderlessPID.Value); //get the process by ID
+                    try
+                    {
+                        process = Process.GetProcessById(AutoBorderlessPID.GetValueOrDefault());
+                    }
+                    catch (ArgumentException)
+                    {
+                        AutoBorderlessPID = null; //reset saved PID
+                        break; //exit loop if the process cannot be found
+                    }
                     if (process.MainWindowHandle != default) //check if the handle exists
                     {
-                        HandleFound = true;
                         handle = process.MainWindowHandle; //if yes, save the handle
+                        break; //exit loop once found
                     }
+                    tries++;
                     await Task.Delay(250); //if no, delay 250 ms
                 }
 
-                if (process.MainWindowTitle.Contains("Minecraft")) //for now just check the title with a magic string. In the future this will allow better control. Also note that we have already filtered out any non-java process
+                if (process != null && process.MainWindowTitle.Contains("Minecraft")) //for now just check the title with a magic string. In the future this will allow better control. Also note that we have already filtered out any non-java process
                     TriggerBorderless(handle); //go borderless
             }
             AddProcessesThreadSafe();
