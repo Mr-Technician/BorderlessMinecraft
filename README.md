@@ -3,13 +3,17 @@ This application allows Minecraft to run as a borderless window. The default ful
 
 ## Join the Discord: https://discord.gg/gbR7qba6uv
 
+## [Click here](https://github.com/Mr-Technician/BorderlessMinecraft/releases) to download or click "Releases"
+
 Basic usage is simple. If minecraft is already running, it will appear in the list of Minecraft sessions. Selecting one and clicking "Go Borderless" will remove all window decoration and set its size to match that of your computer's main monitor.
 
 Clicking "Restore Window" will return it to a normal size and show the menu bar.
 
 Clicking "Set Title" is for usage with multiple accounts, and will append "(Second Account)" to the existing title. Optionally, a custom text can be used instead and will be appended to the current game title. This is primarily useful when using OBS to record multiple Minecraft accounts by locking each game capture to a specific window title.
 
-Alteratively, you can click "Advanced" and enter a size and position manually.
+Alternatively, you can click "Advanced" and enter a size and position manually..
+
+## Important Note: Disable Fullscreen before using Borderless Minecraft
 
 ## New features in 1.3.x
 
