@@ -76,7 +76,7 @@ namespace BorderlessMinecraft
                 heightTextBox.Text = advancedParams[3];
             }
 
-            if (Config.StartMinimized && IsAutoStarted()) //ensure the app has autostarted and minimize to tray is enabled. This ensures normal starts will not be minimized
+            if (Config.StartMinimized)
             {
                 WindowState = FormWindowState.Minimized;
                 Hide(); //hide the app in the tray
