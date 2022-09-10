@@ -1,11 +1,9 @@
 <a href="https://github.com/Mr-Technician">![Developed by](https://img.shields.io/badge/Developed%20by-Mr--Technician-green?logo=Windows%20Terminal)</a>
 <a href="https://github.com/Mr-Technician/BorderlessMinecraft/releases">![GitHub all releases](https://img.shields.io/github/downloads/Mr-Technician/BorderlessMinecraft/total?label=Downloads&logo=Github)</a>
-<a href=" https://discord.gg/gbR7qba6uv">![Discord](https://img.shields.io/discord/781003003297267725?label=Discord&logo=Discord)</a>
+<a href="https://discord.gg/gbR7qba6uv">![Discord](https://img.shields.io/discord/781003003297267725?label=Discord&logo=Discord)</a>
 
 # Borderless Minecraft
 This application allows Minecraft to run as a borderless window. The default fullscreen mode does not allow other windows to be placed above it and does not allow users to mouse away from Minecraft without it minimizing.
-
-## Join the Discord: https://discord.gg/gbR7qba6uv
 
 ## [Click here](https://github.com/Mr-Technician/BorderlessMinecraft/releases) to download or click "Releases"
 
