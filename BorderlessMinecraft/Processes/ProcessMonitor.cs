@@ -59,7 +59,7 @@ namespace BorderlessMinecraft.Processes
         private void StartEventWatcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
             string processName = e.NewEvent.Properties["ProcessName"].Value.ToString();
-            if (processName.Contains("javaw.exe")) //true if the process name is java
+            if (processName.Contains("javaw.exe") || processName.Contains("java.exe")) //true if the process name is java
             {
                 OnJavaAppStarted.Invoke(Convert.ToInt32(e.NewEvent.Properties["ProcessID"].Value)); //return the process id
             }
@@ -68,7 +68,7 @@ namespace BorderlessMinecraft.Processes
         private void StopEventWatcher_EventArrived(object sender, EventArrivedEventArgs e)
         {
             string processName = e.NewEvent.Properties["ProcessName"].Value.ToString();
-            if (processName.Contains("javaw.exe")) //true if the process name is java
+            if (processName.Contains("javaw.exe") || processName.Contains("java.exe")) //true if the process name is java
             {
                 OnJavaAppStopped.Invoke(Convert.ToInt32(e.NewEvent.Properties["ProcessID"].Value)); //return the process id
             }
