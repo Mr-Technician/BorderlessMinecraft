@@ -37,4 +37,4 @@ Administrator privileges are required for automatic borderless as the app monito
 ## Known Issues/Bugs
 
 - When using 'Start Minimized' without 'Minimize to Tray', Borderless Minecraft doesn't show up in the tray.
-    - Will be fixed soon. If this happens to you, open Registry Editor and copy paste this `Computer\HKEY_CURRENT_USER\SOFTWARE\BorderlessMinecraft` into the address bar, where you'll be able to change the options. Remember that 'Start Minized' will only work when 'Minimize to Tray' is turn on (Until the bug is fixed).
+    - Will be fixed soon. If this happens to you, open Registry Editor and copy paste this `Computer\HKEY_CURRENT_USER\SOFTWARE\BorderlessMinecraft` into the address bar, where you'll be able to change the options. Remember that 'Start Minized' will only work when 'Minimize to Tray' is turned on (Until the bug is fixed).
