@@ -411,6 +411,8 @@ namespace BorderlessMinecraft
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "Borderless Minecraft <version>";
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.mainTitlePictureBox)).EndInit();
             this.ToolTipContextMenu.ResumeLayout(false);
