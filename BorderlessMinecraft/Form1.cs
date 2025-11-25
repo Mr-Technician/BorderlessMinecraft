@@ -61,7 +61,6 @@ namespace BorderlessMinecraft
             ProcessMonitor.OnProcessShouldExit += ProcessMonitor_OnProcessShouldExit;
 
             startOnBootMenuItem.Checked = Config.StartOnBoot;
-            startMinimizedMenuItem.Checked = Config.StartMinimized;
             minimizeToTrayMenuItem.Checked = Config.MinimizeToTray;
             automaticBorderlessMenuItem.Checked = Config.AutomaticBorderless; //starts the ProcessMonitor if set to true
             preserveTaskbarMenuItem.Checked = Config.PreserveTaskBar;
@@ -74,14 +73,6 @@ namespace BorderlessMinecraft
                 yPosTextBox.Text = advancedParams[1];
                 widthTextBox.Text = advancedParams[2];
                 heightTextBox.Text = advancedParams[3];
-            }
-
-            if (Config.StartMinimized)
-            {
-                WindowState = FormWindowState.Minimized;
-                Hide(); //hide the app in the tray
-                ShowInTaskbar = false; //When hiding on startup, we need to explicitly set ShowInTaskbar to false
-                TrayIcon.Visible = true;
             }
         }
 
@@ -144,7 +135,6 @@ namespace BorderlessMinecraft
         }
 
         private void StartOnBootItem_CheckedChanged(object sender, EventArgs e) => Config.StartOnBoot = ((ToolStripMenuItem)sender).Checked;
-        private void StartMinimizedItem_CheckedChanged(object sender, EventArgs e) => Config.StartMinimized = ((ToolStripMenuItem)sender).Checked;
         private void MinimizeToTrayItem_CheckedChanged(object sender, EventArgs e) => Config.MinimizeToTray = ((ToolStripMenuItem)sender).Checked;
         private void AutoBorderlessItem_CheckedChanged(object sender, EventArgs e)
         {
@@ -191,7 +181,7 @@ namespace BorderlessMinecraft
             if (minecraftProcesses.Length == 0) // If no processes are found
             {
                 processesListBox.Enabled = false; // Disable the ListBox so it cannot be selected
-                processesListBox.Items.Add("Found no processes");  // Adds "Found no processes" to the list box
+                processesListBox.Items.Add("No processes found");
                 if (Config.ShowAllClients) { return; } // Return if Show All Clients is enabled
                 processesListBox.Items.Add("Tip: You can turn on all clients by going to"); // Adds "Tip: You can turn on all clients by going to" to ListBox
                 processesListBox.Items.Add("Settings > Show All Clients"); //Adds "Settings > Show All Clients" to list box
@@ -401,11 +391,8 @@ namespace BorderlessMinecraft
             if (Config.MinimizeToTray && WindowState == FormWindowState.Minimized)
             {
                 Hide();
+                ShowInTaskbar = false;
                 TrayIcon.Visible = true;
-            }
-            else
-            {
-                TrayIcon.Visible = false; //we don't want the tray icon to show when window is normal
             }
         }
 

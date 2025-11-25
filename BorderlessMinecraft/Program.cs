@@ -30,13 +30,25 @@ namespace BorderlessMinecraft
 {
     static class Program
     {
+        private const string TrayArgument = "--tray";
 
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            bool runAsTray = args != null && args.Any(a => string.Equals(a, TrayArgument, StringComparison.OrdinalIgnoreCase));
+
+            if (runAsTray)
+            {
+                // In tray mode we run an ApplicationContext instead of a Form.
+                Application.Run(new TrayApplicationContext());
+            }
+            else
+            {
+                Application.Run(new MainForm());
+            }
         }
     }
 }

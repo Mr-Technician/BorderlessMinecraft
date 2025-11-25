@@ -73,7 +73,6 @@ namespace BorderlessMinecraft
             this.SettingsMenu = new System.Windows.Forms.MenuStrip();
             this.Settings = new System.Windows.Forms.ToolStripMenuItem();
             this.startOnBootMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startMinimizedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minimizeToTrayMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.automaticBorderlessMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preserveTaskbarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -319,7 +318,6 @@ namespace BorderlessMinecraft
             this.Settings.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Settings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startOnBootMenuItem,
-            this.startMinimizedMenuItem,
             this.minimizeToTrayMenuItem,
             this.automaticBorderlessMenuItem,
             this.preserveTaskbarMenuItem,
@@ -335,14 +333,6 @@ namespace BorderlessMinecraft
             this.startOnBootMenuItem.Size = new System.Drawing.Size(187, 22);
             this.startOnBootMenuItem.Text = "Start on Boot";
             this.startOnBootMenuItem.CheckedChanged += new System.EventHandler(this.StartOnBootItem_CheckedChanged);
-            // 
-            // startMinimizedMenuItem
-            // 
-            this.startMinimizedMenuItem.CheckOnClick = true;
-            this.startMinimizedMenuItem.Name = "startMinimizedMenuItem";
-            this.startMinimizedMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.startMinimizedMenuItem.Text = "Start Minimized";
-            this.startMinimizedMenuItem.CheckedChanged += new System.EventHandler(this.StartMinimizedItem_CheckedChanged);
             // 
             // minimizeToTrayMenuItem
             // 
@@ -447,7 +437,6 @@ namespace BorderlessMinecraft
         private System.Windows.Forms.MenuStrip SettingsMenu;
         private System.Windows.Forms.ToolStripMenuItem Settings;
         private System.Windows.Forms.ToolStripMenuItem startOnBootMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem startMinimizedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minimizeToTrayMenuItem;
         private System.Windows.Forms.ToolStripMenuItem automaticBorderlessMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ContextMenuShow;
