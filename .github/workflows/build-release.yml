@@ -1,0 +1,144 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.get_version.outputs.VERSION }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Framework
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore BorderlessMinecraft.sln
+
+      - name: Get version from AssemblyInfo.cs
+        id: get_version
+        shell: pwsh
+        run: |
+          $content = Get-Content "BorderlessMinecraft/Properties/AssemblyInfo.cs" -Raw
+          if ($content -match '\[assembly:\s*AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)') {
+            $version = $Matches[1]
+            echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+            echo "Version: $version"
+          } else {
+            Write-Error "Could not find AssemblyVersion attribute in AssemblyInfo.cs"
+            exit 1
+          }
+
+      - name: Build BorderlessMinecraft
+        run: msbuild BorderlessMinecraft/BorderlessMinecraft.csproj /p:Configuration=Release /p:Platform="AnyCPU"
+
+      - name: Install .NET SDK for WiX
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build MSI Installer
+        run: dotnet build BorderlessMinecraft.Installer/BorderlessMinecraft.Installer.wixproj -c Release
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BorderlessMinecraft-Installer
+          path: BorderlessMinecraft.Installer/bin/Release/**/en-US/*.msi
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Check if published release already exists
+        id: check_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: v${{ needs.build.outputs.version }}
+        run: |
+          # Verify gh CLI is available
+          if ! command -v gh &> /dev/null; then
+            echo "Error: GitHub CLI (gh) is not available"
+            exit 1
+          fi
+          
+          # Check if release exists and whether it's a draft or published
+          IS_DRAFT=$(gh release view "$VERSION" --repo ${{ github.repository }} --json isDraft -q '.isDraft' 2>/dev/null || echo "not_found")
+          
+          if [ "$IS_DRAFT" = "true" ]; then
+            echo "Draft release $VERSION exists, will overwrite it"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "delete_existing=true" >> $GITHUB_OUTPUT
+          elif [ "$IS_DRAFT" = "false" ]; then
+            echo "Published release $VERSION already exists, skipping release creation"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+            echo "delete_existing=false" >> $GITHUB_OUTPUT
+          else
+            echo "Release $VERSION does not exist, will create new draft release"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "delete_existing=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Delete existing draft release
+        if: steps.check_release.outputs.delete_existing == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: v${{ needs.build.outputs.version }}
+        run: |
+          echo "Deleting existing draft release $VERSION"
+          gh release delete "$VERSION" --repo ${{ github.repository }} --yes
+
+      - name: Download MSI artifact
+        if: steps.check_release.outputs.should_release == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: BorderlessMinecraft-Installer
+          path: ./artifacts
+
+      - name: Find MSI file
+        if: steps.check_release.outputs.should_release == 'true'
+        id: find_msi
+        run: |
+          MSI_PATH=$(find ./artifacts -name "*.msi" -type f | head -1)
+          if [ -z "$MSI_PATH" ]; then
+            echo "Error: No MSI file found in artifacts"
+            exit 1
+          fi
+          MSI_NAME=$(basename "$MSI_PATH")
+          echo "MSI_PATH=$MSI_PATH" >> $GITHUB_OUTPUT
+          echo "MSI_NAME=$MSI_NAME" >> $GITHUB_OUTPUT
+          echo "Found MSI: $MSI_PATH"
+
+      - name: Create Draft Release
+        if: steps.check_release.outputs.should_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.build.outputs.version }}
+          name: Borderless Minecraft ${{ needs.build.outputs.version }}
+          body: |
+            ## Borderless Minecraft ${{ needs.build.outputs.version }}
+            
+            ### Installation
+            Download and run the MSI installer below.
+            
+            **Note:** This is a draft release from the installer branch.
+          draft: true
+          prerelease: false
+          make_latest: true
+          files: ${{ steps.find_msi.outputs.MSI_PATH }}
+          generate_release_notes: true

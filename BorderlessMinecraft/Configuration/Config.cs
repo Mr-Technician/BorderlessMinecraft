@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace BorderlessMinecraft.Configuration
 {
     /// <summary>
-    /// Exposes configuration properties that will be automatically saved to and retrieved from the registry
+    /// Exposes configuration properties that will be automatically saved to and retrieved from the registry.
+    /// All property setters signal the ConfigReloadSignal IPC event so tray/background helpers can reload configuration immediately.
     /// </summary>
     class Config
     {
@@ -18,8 +19,6 @@ namespace BorderlessMinecraft.Configuration
 
             if (bool.TryParse((string)Registry.GetKeyValue(nameof(StartOnBoot)), out bool startOnBoot))
                 _startOnBoot = startOnBoot;
-            if (bool.TryParse((string)Registry.GetKeyValue(nameof(StartMinimized)), out bool startMinimized))
-                _startMinimized = startMinimized;
             if (bool.TryParse((string)Registry.GetKeyValue(nameof(MinimizeToTray)), out bool minimizeToTray))
                 _minimizeToTray = minimizeToTray;
             if (bool.TryParse((string)Registry.GetKeyValue(nameof(AutomaticBorderless)), out bool automaticBorderless))
@@ -41,26 +40,18 @@ namespace BorderlessMinecraft.Configuration
                 _startOnBoot = value;
                 Registry.SetKeyValue(nameof(StartOnBoot), value);
                 AutoStartup.SetStartup(value);
+                BorderlessMinecraft.ConfigReloadSignal.SignalReload();
             }
         }
         private bool _startOnBoot;
 
-        public bool StartMinimized
-        {
-            get => _startMinimized;
-            set
-            {
-                _startMinimized = value;
-                Registry.SetKeyValue(nameof(StartMinimized), value);
-            }
-        }
-        private bool _startMinimized;
         public bool MinimizeToTray
         {
             get => _minimizeToTray; set
             {
                 _minimizeToTray = value;
                 Registry.SetKeyValue(nameof(MinimizeToTray), value);
+                BorderlessMinecraft.ConfigReloadSignal.SignalReload();
             }
         }
         private bool _minimizeToTray;
@@ -70,6 +61,7 @@ namespace BorderlessMinecraft.Configuration
             {
                 _automaticBorderless = value;
                 Registry.SetKeyValue(nameof(AutomaticBorderless), value);
+                BorderlessMinecraft.ConfigReloadSignal.SignalReload();
             }
         }
         private bool _automaticBorderless;
@@ -79,6 +71,7 @@ namespace BorderlessMinecraft.Configuration
             {
                 _preserveTaskBar = value;
                 Registry.SetKeyValue(nameof(PreserveTaskBar), value);
+                BorderlessMinecraft.ConfigReloadSignal.SignalReload();
             }
         }
         private bool _preserveTaskBar;
@@ -88,6 +81,7 @@ namespace BorderlessMinecraft.Configuration
             {
                 _showAllClients = value;
                 Registry.SetKeyValue(nameof(ShowAllClients), value);
+                BorderlessMinecraft.ConfigReloadSignal.SignalReload();
             }
         }
         private bool _showAllClients;
@@ -97,6 +91,7 @@ namespace BorderlessMinecraft.Configuration
             {
                 _advanced = value;
                 Registry.SetKeyValue(nameof(Advanced), value);
+                BorderlessMinecraft.ConfigReloadSignal.SignalReload();
             }
         }
         private bool _advanced;
@@ -106,6 +101,7 @@ namespace BorderlessMinecraft.Configuration
             {
                 _advancedParams = value;
                 Registry.SetKeyValue(nameof(AdvancedParams), value);
+                BorderlessMinecraft.ConfigReloadSignal.SignalReload();
             }
         }
         private string _advancedParams;

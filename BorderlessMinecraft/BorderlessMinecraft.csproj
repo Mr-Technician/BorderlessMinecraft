@@ -61,7 +61,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigReloadSignal.cs" />
     <Compile Include="Configuration\AutoStartup.cs" />
     <Compile Include="Configuration\RegistryEditor.cs" />
     <Compile Include="Configuration\Config.cs" />
@@ -93,6 +94,7 @@
     </Compile>
     <Compile Include="Processes\ProcessMonitor.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TrayApplicationContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

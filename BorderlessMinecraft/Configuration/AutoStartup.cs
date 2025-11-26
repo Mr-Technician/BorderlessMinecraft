@@ -10,18 +10,24 @@ namespace BorderlessMinecraft.Configuration
     static class AutoStartup
     {
         /// <summary>
-        /// Sets the auto startup location for borderless minecraft
+        /// Sets the auto startup location for Borderless Minecraft. When enabled, the helper will be started
+        /// in tray mode using the --tray argument from the user's profile at logon.
         /// </summary>
-        /// <param name="enabled"></param>
+        /// <param name="enabled">True to enable autostart; false to disable.</param>
         internal static void SetStartup(bool enabled)
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
             if (enabled)
-                key.SetValue(nameof(BorderlessMinecraft), System.Reflection.Assembly.GetEntryAssembly().Location + " -autoStart"); //set the key value and append the flag
+            {
+                string exePath = System.Windows.Forms.Application.ExecutablePath;
+                string command = "\"" + exePath + "\" --tray";
+                key.SetValue("BorderlessMinecraft", command);
+            }
             else
-                key.DeleteValue(nameof(BorderlessMinecraft), false); //remove the startup entry
-
+            {
+                key.DeleteValue("BorderlessMinecraft", false); //remove the startup entry
+            }
         }
     }
 }
