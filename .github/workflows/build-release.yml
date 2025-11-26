@@ -26,6 +26,20 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore BorderlessMinecraft.sln
 
+      - name: Get version from AssemblyInfo.cs
+        id: get_version
+        shell: pwsh
+        run: |
+          $content = Get-Content "BorderlessMinecraft/Properties/AssemblyInfo.cs" -Raw
+          if ($content -match '\[assembly:\s*AssemblyVersion\("([0-9]+\.[0-9]+\.[0-9]+)') {
+            $version = $Matches[1]
+            echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+            echo "Version: $version"
+          } else {
+            Write-Error "Could not find AssemblyVersion attribute in AssemblyInfo.cs"
+            exit 1
+          }
+
       - name: Build BorderlessMinecraft
         run: msbuild BorderlessMinecraft/BorderlessMinecraft.csproj /p:Configuration=Release /p:Platform="AnyCPU"
 
@@ -36,20 +50,6 @@ jobs:
 
       - name: Build MSI Installer
         run: dotnet build BorderlessMinecraft.Installer/BorderlessMinecraft.Installer.wixproj -c Release
-
-      - name: Get version from Package.wxs
-        id: get_version
-        shell: pwsh
-        run: |
-          $content = Get-Content "BorderlessMinecraft.Installer/Package.wxs" -Raw
-          if ($content -match 'Version="([^"]+)"') {
-            $version = $Matches[1]
-            echo "VERSION=$version" >> $env:GITHUB_OUTPUT
-            echo "Version: $version"
-          } else {
-            Write-Error "Could not find Version attribute in Package.wxs"
-            exit 1
-          }
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
@@ -65,7 +65,7 @@ jobs:
       contents: write
     
     steps:
-      - name: Check if release already exists
+      - name: Check if published release already exists
         id: check_release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -77,14 +77,31 @@ jobs:
             exit 1
           fi
           
-          # Check if release exists
-          if gh release view "$VERSION" --repo ${{ github.repository }} > /dev/null 2>&1; then
-            echo "Release $VERSION already exists, skipping release creation"
-            echo "should_release=false" >> $GITHUB_OUTPUT
-          else
-            echo "Release $VERSION does not exist, will create new release"
+          # Check if release exists and whether it's a draft or published
+          IS_DRAFT=$(gh release view "$VERSION" --repo ${{ github.repository }} --json isDraft -q '.isDraft' 2>/dev/null || echo "not_found")
+          
+          if [ "$IS_DRAFT" = "true" ]; then
+            echo "Draft release $VERSION exists, will overwrite it"
             echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "delete_existing=true" >> $GITHUB_OUTPUT
+          elif [ "$IS_DRAFT" = "false" ]; then
+            echo "Published release $VERSION already exists, skipping release creation"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+            echo "delete_existing=false" >> $GITHUB_OUTPUT
+          else
+            echo "Release $VERSION does not exist, will create new draft release"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "delete_existing=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Delete existing draft release
+        if: steps.check_release.outputs.delete_existing == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: v${{ needs.build.outputs.version }}
+        run: |
+          echo "Deleting existing draft release $VERSION"
+          gh release delete "$VERSION" --repo ${{ github.repository }} --yes --cleanup-tag
 
       - name: Download MSI artifact
         if: steps.check_release.outputs.should_release == 'true'
@@ -107,7 +124,7 @@ jobs:
           echo "MSI_NAME=$MSI_NAME" >> $GITHUB_OUTPUT
           echo "Found MSI: $MSI_PATH"
 
-      - name: Create Release
+      - name: Create Draft Release
         if: steps.check_release.outputs.should_release == 'true'
         uses: softprops/action-gh-release@v2
         with:
@@ -119,8 +136,9 @@ jobs:
             ### Installation
             Download and run the MSI installer below.
             
-            **Note:** This is a pre-release version from the installer branch.
-          draft: false
-          prerelease: true
+            **Note:** This is a draft release from the installer branch.
+          draft: true
+          prerelease: false
+          make_latest: true
           files: ${{ steps.find_msi.outputs.MSI_PATH }}
           generate_release_notes: true

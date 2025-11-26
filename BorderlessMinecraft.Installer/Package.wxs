@@ -3,7 +3,7 @@
   <Package 
     Name="Borderless Minecraft" 
     Manufacturer="Technyx LLC" 
-    Version="1.4.0"
+    Version="$(var.Version)"
     UpgradeCode="A8B9C1D2-E3F4-5678-9ABC-DEF012345678"
     Compressed="yes"
     InstallerVersion="500"
