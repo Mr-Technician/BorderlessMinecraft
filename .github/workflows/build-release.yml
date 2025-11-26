@@ -53,7 +53,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: BorderlessMinecraft-Installer
-          path: BorderlessMinecraft.Installer/bin/Release/**/*.msi
+          path: BorderlessMinecraft.Installer/bin/Release/**/en-US/*.msi
+          if-no-files-found: error
 
   release:
     needs: build
