@@ -1,5 +1,7 @@
 ﻿<Project Sdk="WixToolset.Sdk/6.0.2">
   <PropertyGroup>
+    <!-- Set output MSI filename -->
+    <OutputName>BorderlessMinecraft</OutputName>
     <!-- Read version from AssemblyInfo.cs for local builds -->
     <AssemblyInfoPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\BorderlessMinecraft\Properties\AssemblyInfo.cs'))</AssemblyInfoPath>
     <AssemblyInfoContent Condition="Exists('$(AssemblyInfoPath)')">$([System.IO.File]::ReadAllText('$(AssemblyInfoPath)'))</AssemblyInfoContent>
