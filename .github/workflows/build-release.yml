@@ -101,7 +101,7 @@ jobs:
           VERSION: v${{ needs.build.outputs.version }}
         run: |
           echo "Deleting existing draft release $VERSION"
-          gh release delete "$VERSION" --repo ${{ github.repository }} --yes --cleanup-tag
+          gh release delete "$VERSION" --repo ${{ github.repository }} --yes
 
       - name: Download MSI artifact
         if: steps.check_release.outputs.should_release == 'true'
