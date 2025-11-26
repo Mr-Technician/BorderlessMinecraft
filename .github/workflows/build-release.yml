@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read
     outputs:
       version: ${{ steps.get_version.outputs.VERSION }}
     
