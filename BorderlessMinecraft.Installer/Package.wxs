@@ -1,0 +1,48 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package 
+    Name="Borderless Minecraft" 
+    Manufacturer="Technyx LLC" 
+    Version="1.4.0"
+    UpgradeCode="A8B9C1D2-E3F4-5678-9ABC-DEF012345678"
+    Compressed="yes"
+    InstallerVersion="500"
+    Scope="perUser">
+    
+    <!-- Major Upgrade Strategy -->
+    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+    
+    <!-- Application Icon -->
+    <Icon Id="AppIcon.ico" SourceFile="..\BorderlessMinecraft\barrier.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon.ico" />
+    
+    <!-- Add/Remove Programs Properties -->
+    <Property Id="ARPHELPLINK" Value="https://github.com/Mr-Technician/BorderlessMinecraft" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/Mr-Technician/BorderlessMinecraft" />
+    <Property Id="ARPNOREPAIR" Value="yes" />
+    <Property Id="ARPNOMODIFY" Value="yes" />
+    
+    <!-- UI Configuration -->
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    <ui:WixUI Id="WixUI_FeatureTree" />
+    
+    <!-- Features -->
+    <Feature Id="MainApplication" 
+             Title="Borderless Minecraft" 
+             Level="1"
+             Description="Main application files"
+             Display="expand"
+             ConfigurableDirectory="INSTALLFOLDER">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="StartMenuShortcut" />
+      <ComponentRef Id="DesktopShortcut" />
+    </Feature>
+    
+    <Feature Id="StartOnBootFeature" 
+             Title="Run at Windows Startup" 
+             Level="1000"
+             Description="Automatically launch the Borderless Minecraft tray helper when Windows starts.">
+      <ComponentRef Id="StartupRegistryEntry" />
+    </Feature>
+  </Package>
+</Wix>

@@ -1,0 +1,18 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <!-- Install to LocalAppData\BorderlessMinecraft\BorderlessMinecraft -->
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="ManufacturerFolder" Name="BorderlessMinecraft">
+        <Directory Id="INSTALLFOLDER" Name="BorderlessMinecraft" />
+      </Directory>
+    </StandardDirectory>
+    
+    <!-- Start Menu -->
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="Borderless Minecraft"/>
+    </StandardDirectory>
+    
+    <!-- Desktop -->
+    <StandardDirectory Id="DesktopFolder" />
+  </Fragment>
+</Wix>

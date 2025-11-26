@@ -1,0 +1,95 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      
+      <!-- Main Executable -->
+      <Component Id="MainExecutable" Guid="B0AD1E6E-2134-40A6-AC64-96BBC0DA5D66">
+        <File Source="..\BorderlessMinecraft\bin\$(var.Configuration)\BorderlessMinecraft.exe" />
+        <RegistryValue Root="HKCU" Key="Software\BorderlessMinecraft\Installer" 
+                       Name="MainExecutable" Type="integer" Value="1" KeyPath="yes" />
+        <RemoveFolder Id="RemoveINSTALLFOLDER" Directory="INSTALLFOLDER" On="uninstall" />
+        <RemoveFolder Id="RemoveManufacturerFolder" Directory="ManufacturerFolder" On="uninstall" />
+      </Component>
+
+      <!-- Config File -->
+      <Component Id="AppConfig" Guid="C1BD2F7F-3245-41B7-BD75-A7CCD1EB6E77">
+        <File Source="..\BorderlessMinecraft\bin\$(var.Configuration)\BorderlessMinecraft.exe.config" />
+        <RegistryValue Root="HKCU" Key="Software\BorderlessMinecraft\Installer" 
+                       Name="AppConfig" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+
+      <!-- Dependencies -->
+      <Component Id="SystemCodeDom" Guid="D2CE3080-4356-42C8-CE86-B8DDE2FC7F88">
+        <File Source="..\BorderlessMinecraft\bin\$(var.Configuration)\System.CodeDom.dll" />
+        <RegistryValue Root="HKCU" Key="Software\BorderlessMinecraft\Installer" 
+                       Name="SystemCodeDom" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+
+      <!-- License File -->
+      <Component Id="LicenseFile" Guid="E3DF4191-5467-43D9-DF97-C9EEF30D8099">
+        <File Source="..\COPYING.txt" />
+        <RegistryValue Root="HKCU" Key="Software\BorderlessMinecraft\Installer" 
+                       Name="LicenseFile" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+
+      <!-- Registry: Application Settings -->
+      <Component Id="RegistrySettings" Guid="F4E05202-6578-44EA-E0A8-DAFF040E9AA0">
+        <RegistryKey Root="HKCU" Key="SOFTWARE\BorderlessMinecraft">
+          <RegistryValue Type="string" Name="InstallPath" Value="[INSTALLFOLDER]" KeyPath="yes" />
+        </RegistryKey>
+      </Component>
+
+    </ComponentGroup>
+    
+    <!-- Start Menu Shortcut -->
+    <Component Id="StartMenuShortcut" Directory="ApplicationProgramsFolder" Guid="01B16313-7689-45FB-01B9-EB00150410B1">
+      <Shortcut Id="ApplicationStartMenuShortcut"
+                Name="Borderless Minecraft"
+                Description="Run Minecraft in borderless fullscreen mode"
+                Target="[INSTALLFOLDER]BorderlessMinecraft.exe"
+                WorkingDirectory="INSTALLFOLDER"
+                Icon="AppIcon.ico" />
+      <RemoveFolder Id="CleanUpStartMenu" On="uninstall"/>
+      <RegistryValue Root="HKCU" 
+                     Key="Software\BorderlessMinecraft\Installer" 
+                     Name="StartMenuShortcut" 
+                     Type="integer" 
+                     Value="1" 
+                     KeyPath="yes"/>
+    </Component>
+    
+    <!-- Desktop Shortcut -->
+    <Component Id="DesktopShortcut" Directory="DesktopFolder" Guid="02C27424-8790-460C-02CA-FC11261520C2">
+      <Shortcut Id="ApplicationDesktopShortcut"
+                Name="Borderless Minecraft"
+                Description="Run Minecraft in borderless fullscreen mode"
+                Target="[INSTALLFOLDER]BorderlessMinecraft.exe"
+                WorkingDirectory="INSTALLFOLDER"
+                Icon="AppIcon.ico" />
+      <RemoveFolder Id="CleanUpDesktop" On="uninstall"/>
+      <RegistryValue Root="HKCU" 
+                     Key="Software\BorderlessMinecraft\Installer" 
+                     Name="DesktopShortcut" 
+                     Type="integer" 
+                     Value="1" 
+                     KeyPath="yes"/>
+    </Component>
+    
+    <!-- Startup Registry Entry -->
+    <Component Id="StartupRegistryEntry" Directory="INSTALLFOLDER" Guid="03D38535-9801-470D-03DB-0D22372630D3">
+      <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run">
+        <RegistryValue Name="BorderlessMinecraft"
+                       Type="string"
+                       Value="&quot;[INSTALLFOLDER]BorderlessMinecraft.exe&quot; --tray"
+                       KeyPath="yes" />
+      </RegistryKey>
+      
+      <!-- Also set the StartOnBoot config value -->
+      <RegistryKey Root="HKCU" Key="SOFTWARE\BorderlessMinecraft">
+        <RegistryValue Name="StartOnBoot"
+                       Type="string"
+                       Value="True" />
+      </RegistryKey>
+    </Component>
+  </Fragment>
+</Wix>
