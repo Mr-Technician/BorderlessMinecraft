@@ -1,0 +1,126 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - installer
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.get_version.outputs.VERSION }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Framework
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore BorderlessMinecraft.sln
+
+      - name: Build BorderlessMinecraft
+        run: msbuild BorderlessMinecraft/BorderlessMinecraft.csproj /p:Configuration=Release /p:Platform="Any CPU"
+
+      - name: Install .NET SDK for WiX
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build MSI Installer
+        run: dotnet build BorderlessMinecraft.Installer/BorderlessMinecraft.Installer.wixproj -c Release
+
+      - name: Get version from Package.wxs
+        id: get_version
+        shell: pwsh
+        run: |
+          $content = Get-Content "BorderlessMinecraft.Installer/Package.wxs" -Raw
+          if ($content -match 'Version="([^"]+)"') {
+            $version = $Matches[1]
+            echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+            echo "Version: $version"
+          } else {
+            Write-Error "Could not find Version attribute in Package.wxs"
+            exit 1
+          }
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BorderlessMinecraft-Installer
+          path: BorderlessMinecraft.Installer/bin/Release/**/en-US/*.msi
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Check if release already exists
+        id: check_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: v${{ needs.build.outputs.version }}
+        run: |
+          # Verify gh CLI is available
+          if ! command -v gh &> /dev/null; then
+            echo "Error: GitHub CLI (gh) is not available"
+            exit 1
+          fi
+          
+          # Check if release exists
+          if gh release view "$VERSION" --repo ${{ github.repository }} > /dev/null 2>&1; then
+            echo "Release $VERSION already exists, skipping release creation"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "Release $VERSION does not exist, will create new release"
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download MSI artifact
+        if: steps.check_release.outputs.should_release == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: BorderlessMinecraft-Installer
+          path: ./artifacts
+
+      - name: Find MSI file
+        if: steps.check_release.outputs.should_release == 'true'
+        id: find_msi
+        run: |
+          MSI_PATH=$(find ./artifacts -name "*.msi" -type f | head -1)
+          if [ -z "$MSI_PATH" ]; then
+            echo "Error: No MSI file found in artifacts"
+            exit 1
+          fi
+          MSI_NAME=$(basename "$MSI_PATH")
+          echo "MSI_PATH=$MSI_PATH" >> $GITHUB_OUTPUT
+          echo "MSI_NAME=$MSI_NAME" >> $GITHUB_OUTPUT
+          echo "Found MSI: $MSI_PATH"
+
+      - name: Create Release
+        if: steps.check_release.outputs.should_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.build.outputs.version }}
+          name: Borderless Minecraft ${{ needs.build.outputs.version }}
+          body: |
+            ## Borderless Minecraft ${{ needs.build.outputs.version }}
+            
+            ### Installation
+            Download and run the MSI installer below.
+            
+            **Note:** This is a pre-release version from the installer branch.
+          draft: false
+          prerelease: true
+          files: ${{ steps.find_msi.outputs.MSI_PATH }}
+          generate_release_notes: true
