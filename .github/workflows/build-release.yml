@@ -1,0 +1,100 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - installer
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Framework
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore BorderlessMinecraft.sln
+
+      - name: Build BorderlessMinecraft
+        run: msbuild BorderlessMinecraft/BorderlessMinecraft.csproj /p:Configuration=Release /p:Platform="Any CPU"
+
+      - name: Install .NET SDK for WiX
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build MSI Installer
+        run: dotnet build BorderlessMinecraft.Installer/BorderlessMinecraft.Installer.wixproj -c Release
+
+      - name: Get version from Package.wxs
+        id: get_version
+        shell: pwsh
+        run: |
+          [xml]$wxs = Get-Content "BorderlessMinecraft.Installer/Package.wxs"
+          $version = $wxs.Wix.Package.Version
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "Version: $version"
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BorderlessMinecraft-Installer
+          path: BorderlessMinecraft.Installer/bin/Release/**/*.msi
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version from Package.wxs
+        id: get_version
+        run: |
+          VERSION=$(grep -oP 'Version="\K[^"]+' BorderlessMinecraft.Installer/Package.wxs)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Download MSI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: BorderlessMinecraft-Installer
+          path: ./artifacts
+
+      - name: Find MSI file
+        id: find_msi
+        run: |
+          MSI_PATH=$(find ./artifacts -name "*.msi" -type f | head -1)
+          MSI_NAME=$(basename "$MSI_PATH")
+          echo "MSI_PATH=$MSI_PATH" >> $GITHUB_OUTPUT
+          echo "MSI_NAME=$MSI_NAME" >> $GITHUB_OUTPUT
+          echo "Found MSI: $MSI_PATH"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
+          name: Borderless Minecraft ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Borderless Minecraft ${{ steps.get_version.outputs.VERSION }}
+            
+            ### Installation
+            Download and run the MSI installer below.
+            
+            **Note:** This is a pre-release version from the installer branch.
+          draft: false
+          prerelease: true
+          files: ${{ steps.find_msi.outputs.MSI_PATH }}
+          generate_release_notes: true
