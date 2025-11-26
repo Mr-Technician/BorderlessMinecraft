@@ -9,6 +9,9 @@
     InstallerVersion="500"
     Scope="perUser">
     
+    <!-- Embed CAB files into MSI -->
+    <MediaTemplate EmbedCab="yes" />
+    
     <!-- Major Upgrade Strategy -->
     <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
     
