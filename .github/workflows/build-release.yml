@@ -139,5 +139,6 @@ jobs:
             **Note:** This is a draft release from the installer branch.
           draft: true
           prerelease: false
+          make_latest: true
           files: ${{ steps.find_msi.outputs.MSI_PATH }}
           generate_release_notes: true
