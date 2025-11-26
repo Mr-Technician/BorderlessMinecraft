@@ -27,7 +27,7 @@ jobs:
         run: nuget restore BorderlessMinecraft.sln
 
       - name: Build BorderlessMinecraft
-        run: msbuild BorderlessMinecraft/BorderlessMinecraft.csproj /p:Configuration=Release /p:Platform="Any CPU"
+        run: msbuild BorderlessMinecraft/BorderlessMinecraft.csproj /p:Configuration=Release /p:Platform="AnyCPU"
 
       - name: Install .NET SDK for WiX
         uses: actions/setup-dotnet@v4
