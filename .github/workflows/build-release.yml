@@ -49,7 +49,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build MSI Installer
-        run: dotnet build BorderlessMinecraft.Installer/BorderlessMinecraft.Installer.wixproj -c Release -p:DefineConstants="Version=${{ steps.get_version.outputs.VERSION }}"
+        run: dotnet build BorderlessMinecraft.Installer/BorderlessMinecraft.Installer.wixproj -c Release
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
