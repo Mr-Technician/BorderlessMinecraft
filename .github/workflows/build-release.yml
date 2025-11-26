@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - installer
-    tags:
-      - 'v*'
 
 jobs:
   build:
     runs-on: windows-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.VERSION }}
     
     steps:
       - name: Checkout code
@@ -39,10 +39,15 @@ jobs:
         id: get_version
         shell: pwsh
         run: |
-          [xml]$wxs = Get-Content "BorderlessMinecraft.Installer/Package.wxs"
-          $version = $wxs.Wix.Package.Version
-          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
-          echo "Version: $version"
+          $content = Get-Content "BorderlessMinecraft.Installer/Package.wxs" -Raw
+          if ($content -match 'Version="([^"]+)"') {
+            $version = $Matches[1]
+            echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+            echo "Version: $version"
+          } else {
+            Write-Error "Could not find Version attribute in Package.wxs"
+            exit 1
+          }
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
@@ -57,16 +62,6 @@ jobs:
       contents: write
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Get version from Package.wxs
-        id: get_version
-        run: |
-          VERSION=$(grep -oP 'Version="\K[^"]+' BorderlessMinecraft.Installer/Package.wxs)
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "Version: $VERSION"
-
       - name: Download MSI artifact
         uses: actions/download-artifact@v4
         with:
@@ -77,6 +72,10 @@ jobs:
         id: find_msi
         run: |
           MSI_PATH=$(find ./artifacts -name "*.msi" -type f | head -1)
+          if [ -z "$MSI_PATH" ]; then
+            echo "Error: No MSI file found in artifacts"
+            exit 1
+          fi
           MSI_NAME=$(basename "$MSI_PATH")
           echo "MSI_PATH=$MSI_PATH" >> $GITHUB_OUTPUT
           echo "MSI_NAME=$MSI_NAME" >> $GITHUB_OUTPUT
@@ -85,10 +84,10 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.get_version.outputs.VERSION }}
-          name: Borderless Minecraft ${{ steps.get_version.outputs.VERSION }}
+          tag_name: v${{ needs.build.outputs.version }}
+          name: Borderless Minecraft ${{ needs.build.outputs.version }}
           body: |
-            ## Borderless Minecraft ${{ steps.get_version.outputs.VERSION }}
+            ## Borderless Minecraft ${{ needs.build.outputs.version }}
             
             ### Installation
             Download and run the MSI installer below.
