@@ -17,7 +17,6 @@
     <PackageReference Include="WixToolset.UI.wixext" Version="6.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="INSTALLER_IMPLEMENTATION.md" />
     <None Include="License.rtf" />
   </ItemGroup>
 </Project>
